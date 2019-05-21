@@ -274,6 +274,7 @@ public class HouseDaoImpl implements HouseDao {
 
         List params = new ArrayList();
 
+
         if(mixPrice >= 0 && maxPrice>mixPrice){
             sb.append( " and price between ? and ? ");
 
