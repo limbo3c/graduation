@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的订单</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/myorder.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/getParameter.js"></script>
+    <script>
+
+        $(function () {
+
+
+            var uid = getParameter("uid");
+
+            //当页码加载完成后，调用load方法，发送ajax请求加载数据
+            load(uid,null);
+        });
+
+        function load(uid ,currentPage){
+
+            $.get("order/myOrder",{uid:uid,currentPage:currentPage},function (pb) {
+
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+
+
+                var lis = "";
+
+                var fristPage = '<li onclick="javascipt:load('+uid+',1)"><a href="javascript:void(0)">首页</a></li>';
+
+                //计算上一页的页码
+                var beforeNum =  pb.currentPage - 1;
+                if(beforeNum <= 0){
+                    beforeNum = 1;
+                }
+
+                var beforePage = '<li  onclick="javascipt:load('+uid+','+beforeNum+')" class="threeword"><a href="javascript:void(0)">上一页</a></li>';
+
+                lis += fristPage;
+                lis += beforePage;
+                //展示分页
+
+                var begin; // 开始位置
+                var end ; //  结束位置
+
+                if(pb.totalPage < 10){
+
+
+                    begin = 1;
+                    end = pb.totalPage;
+                }else{
+
+
+                    begin = pb.currentPage - 5 ;
+                    end = pb.currentPage + 4 ;
+
+                    //如果前边不够5个，后边补齐10个
+                    if(begin < 1){
+                        begin = 1;
+                        end = begin + 9;
+                    }
+
+                    //如果后边不足4个，前边补齐10个
+                    if(end > pb.totalPage){
+                        end = pb.totalPage;
+                        begin = end - 9 ;
+                    }
+                }
+
+
+                for (var i = begin; i <= end ; i++) {
+                    var li;
+
+                    if(pb.currentPage == i){
+
+                        li = '<li class="curPage" onclick="javascript:load('+uid+','+i+')"><a href="javascript:void(0)">'+i+'</a></li>';
+
+                    }else{
+
+                        li = '<li onclick="javascript:load('+uid+','+i+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }
+
+                    lis += li;
+                }
+
+
+                var lastPage = '<li onclick="javascript:load('+uid+','+pb.totalPage+')" class="threeword"><a href="javascript:void(0)">末页</a></li>';
+
+                var afterNum =  pb.currentPage + 1;
+                if(afterNum >= pb.totalPage){
+                    afterNum =pb.totalPage;
+                }
+
+                var nextPage = '<li onclick="javascript:load('+uid+','+afterNum+')" class="threeword"><a href="javascript:void(0)">下一页</a></li>';
+
+                lis += nextPage;
+                lis += lastPage;
+
+
+                $("#pageNum").html(lis);
+
+                var order_lis = "";
+
+                for (var i = 0; i < pb.list.length; i++) {
+
+                    var order = pb.list[i];
+
+                    var li = ' <tr>\n' +
+                        '                                    <td>'+order.oid+'</td>\n' +
+                        '                                    <td>'+order.hid+'</td>\n' +
+                        '                                    <td>'+order.sid+'</td>\n' +
+                        '                                    <td>'+order.startAndEndDate+'</td>\n' +
+                        '                                    <td>'+order.createDate+'</td>\n' +
+                        '                                    <td>'+order.telephone+'</td>\n' +
+                        '                                    <td>'+order.pay+'</td>\n' +
+                        '                                    <td>'+order.stage+'</td>\n' +
+                        '                                    <td>'+order.price+'</td>\n' +
+                        '                                </tr>';
+                    order_lis += li;
+                }
+                $("#order").html(order_lis);
+
+
+                window.scrollTo(0,0);
+            });
+
+        }
+
+
+    </script>
+</head>
+<body>
+
+<div id="header"></div>
+<div class="page_one">
+    <div class="contant">
+        <div class="crumbs">
+            <img src="images/search.png" alt="">
+            <p><span>搜索结果</span></p>
+        </div>
+        <div class="xinxi clearfix">
+            <div class="left">
+                <!--<div class="header">-->
+                    <!--<span>订单号</span>-->
+                    <!--<span>房源名称</span>-->
+                    <!--<span>房东姓名</span>-->
+                    <!--<span>起止日期</span>-->
+                    <!--<span>创建时间</span>-->
+                    <!--<span>联系电话</span>-->
+                    <!--<span>支付状态</span>-->
+                    <!--<span>订单状态</span>-->
+                    <!--<span class="jg">金额</span>-->
+                <!--</div>-->
+                <!--<ul id="order">-->
+
+                <!--</ul>-->
+
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>订单号</th>
+                                    <th>房源名称</th>
+                                    <th>房东姓名</th>
+                                    <th>起止日期</th>
+                                    <th>创建时间</th>
+                                    <th>联系电话</th>
+                                    <th>支付状态</th>
+                                    <th>订单状态</th>
+                                    <th>订单金额</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="order">
+                                <!--<tr>-->
+                                    <!--<td>-->
+                                        <!--1-->
+                                    <!--</td>-->
+                                    <!--<td>-->
+                                        <!--TB - Monthly-->
+                                    <!--</td>-->
+                                    <!--<td>-->
+                                        <!--01/04/2012-->
+                                    <!--</td>-->
+                                    <!--<td>-->
+                                        <!--Default-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="page_num_inf">
+                    <i></i> 共
+                    <span id="totalPage">12</span>页<span id="totalCount">132</span>条
+                </div>
+                <div class="pageNum">
+                    <ul id="pageNum">
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="footer"></div>
+
+<script type="text/javascript" src="js/include.js"></script>
+</body>
+</html>

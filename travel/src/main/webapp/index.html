@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>酒店预订</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <script src="js/jquery-3.3.1.js"></script>
+
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/include.js"></script>
+
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <script>
+        $(function () {
+
+            hotHouse();
+            newestHouse();
+            testHouse();
+            domesticRecommendHouse();
+            abroadRecommendHouse();
+        });
+
+        function hotHouse(){
+
+            $.get("house/hotHouse",function (pb) {
+
+
+                console.log(pb.length);
+
+
+
+                var house_lis = "";
+                for (var i = 0; i < pb.length; i++) {
+
+                    var house = pb[i];
+
+                    var li = '<div class="col-md-3">\n' +
+                        '                                <a href="house_detail.html?hid='+house.hid+'">\n' +
+                        '                                    <img class="jingxuan" src="'+house.himage+'" alt="">\n' +
+                        '                                    <div class="has_border">\n' +
+                        '                                        <h3>'+house.hname+'</h3>\n' +
+                        '                                        <div class="price">网付价<em>￥</em><strong>'+house.price+'</strong><em>起</em></div>\n' +
+                        '                                    </div>\n' +
+                        '                                </a>\n' +
+                        '                            </div>';
+                    house_lis += li;
+                }
+                $("#hotHouse").html(house_lis);
+
+
+
+            });
+
+        }
+
+        function newestHouse(){
+
+            $.get("house/newestHouse",function (pb) {
+
+
+                console.log(pb.length);
+
+
+
+                var house_lis = "";
+                for (var i = 0; i < pb.length; i++) {
+
+                    var house = pb[i];
+
+                    var li = '<div class="col-md-3">\n' +
+                        '                                <a href="house_detail.html?hid='+house.hid+'">\n' +
+                        '                                    <img class="jingxuan" src="'+house.himage+'" alt="">\n' +
+                        '                                    <div class="has_border">\n' +
+                        '                                        <h3>'+house.hname+'</h3>\n' +
+                        '                                        <div class="price">网付价<em>￥</em><strong>'+house.price+'</strong><em>起</em></div>\n' +
+                        '                                    </div>\n' +
+                        '                                </a>\n' +
+                        '                            </div>';
+                    house_lis += li;
+                }
+                $("#newestHouse").html(house_lis);
+
+
+
+            });
+
+        }
+
+
+        function testHouse(){
+
+            $.get("house/testHouse",function (pb) {
+
+
+                console.log(pb.length);
+
+
+
+                var house_lis = "";
+                for (var i = 0; i < pb.length; i++) {
+
+                    var house = pb[i];
+
+                    var li = '<div class="col-md-3">\n' +
+                        '                                <a href="house_detail.html?hid='+house.hid+'">\n' +
+                        '                                    <img class="jingxuan" src="'+house.himage+'" alt="">\n' +
+                        '                                    <div class="has_border">\n' +
+                        '                                        <h3>'+house.hname+'</h3>\n' +
+                        '                                        <div class="price">网付价<em>￥</em><strong>'+house.price+'</strong><em>起</em></div>\n' +
+                        '                                    </div>\n' +
+                        '                                </a>\n' +
+                        '                            </div>';
+                    house_lis += li;
+                }
+                $("#testHouse").html(house_lis);
+
+
+
+            });
+
+        }
+
+        function domesticRecommendHouse(){
+
+            $.get("house/domesticRecommendHouse",function (pb) {
+
+
+                console.log(pb.length);
+
+
+
+                var house_lis = "";
+                for (var i = 0; i < pb.length; i++) {
+
+                    var house = pb[i];
+
+                    var li = '<div class="col-md-4">\n' +
+                        '                                <a href="house_detail.html?hid='+house.hid+'">\n' +
+                        '                                    <img class="jingxuan" src="'+house.himage+'" alt="">\n' +
+                        '                                    <div class="has_border">\n' +
+                        '                                        <h3>'+house.hname+'</h3>\n' +
+                        '                                        <div class="price">网付价<em>￥</em><strong>'+house.price+'</strong><em>起</em></div>\n' +
+                        '                                    </div>\n' +
+                        '                                </a>\n' +
+                        '                            </div>';
+                    house_lis += li;
+                }
+                $("#domesticRecommendHouse").html(house_lis);
+
+
+
+            });
+
+        }
+
+        function abroadRecommendHouse(){
+
+            $.get("house/abroadRecommendHouse",function (pb) {
+
+
+                console.log(pb.length);
+
+
+
+                var house_lis = "";
+                for (var i = 0; i < pb.length; i++) {
+
+                    var house = pb[i];
+
+                    var li = '<div class="col-md-4">\n' +
+                        '                                <a href="house_detail.html?hid='+house.hid+'">\n' +
+                        '                                    <img class="jingxuan" src="'+house.himage+'" alt="">\n' +
+                        '                                    <div class="has_border">\n' +
+                        '                                        <h3>'+house.hname+'</h3>\n' +
+                        '                                        <div class="price">网付价<em>￥</em><strong>'+house.price+'</strong><em>起</em></div>\n' +
+                        '                                    </div>\n' +
+                        '                                </a>\n' +
+                        '                            </div>';
+                    house_lis += li;
+                }
+                $("#abroadRecommendHouse").html(house_lis);
+
+
+
+            });
+
+        }
+
+
+    </script>
+</head>
+<body>
+	<!--引入头部-->
+    <div id="header"></div>
+
+    <section id="banner">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="2000">
+
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            </ol>
+
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img src="images/banner_1.jpg" alt="">
+                </div>
+                <div class="item">
+                    <img src="images/banner_2.jpg" alt="">
+                </div>
+                <div class="item">
+                    <img src="images/banner_3.jpg" alt="">
+                </div>
+            </div>
+
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+			    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			    <span class="sr-only">Previous</span>
+			  </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+			    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			    <span class="sr-only">Next</span>
+			  </a>
+        </div>
+    </section>
+
+
+    <section id="content">
+
+        <section class="hemai_jx">
+            <div class="jx_top">
+                <div class="jx_tit">
+                    <img src="images/icon_5.jpg" alt="">
+                    <span>精选</span>
+                </div>
+
+                <ul class="jx_tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <span></span>
+                        <a href="#popularity" aria-controls="popularity" role="tab" data-toggle="tab">人气房源</a>
+                    </li>
+                    <li role="presentation">
+                        <span></span>
+                        <a href="#newest" aria-controls="newest" role="tab" data-toggle="tab">最新房源</a>
+                    </li>
+                    <li role="presentation">
+                        <span></span>
+                        <a href="#theme" aria-controls="theme" role="tab" data-toggle="tab">个性房源</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="jx_content">
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="popularity">
+                        <div class="row" id="hotHouse">
+
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="newest">
+                        <div class="row" id="newestHouse">
+
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="theme">
+                        <div class="row" id="testHouse">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hemai_jx">
+            <div class="jx_top">
+                <div class="jx_tit">
+                    <img src="images/icon_6.jpg" alt="">
+                    <span>国内</span>
+                </div>
+            </div>
+            <div class="heima_gn">
+                <div class="guonei_l">
+                    <img src="images/guonei_1.jpg" alt="">
+                </div>
+                <div class="guone_r">
+                    <div class="row" id="domesticRecommendHouse">
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hemai_jx">
+            <div class="jx_top">
+                <div class="jx_tit">
+                    <img src="images/icon_7.jpg" alt="">
+                    <span>境外</span>
+                </div>
+            </div>
+            <div class="heima_gn">
+                <div class="guonei_l">
+                    <img src="images/jiangwai_1.jpg" alt="">
+                </div>
+                <div class="guone_r">
+                    <div class="row" id="abroadRecommendHouse">
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <div id="footer"></div>
+
+</body>
+</html>

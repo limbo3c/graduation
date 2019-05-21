@@ -1,0 +1,29 @@
+#ground{
+    width: 100%;
+    height: 850px;
+
+}
+
+#sidebar{
+    width: 200px;
+    height: 820px;
+    float: left;
+
+}
+
+#tables{
+    margin-left: 50px;
+    width: 1500px;
+    float: left;
+}
+
+#right{
+    margin-left: 50px;
+    width: 1500px;
+    float: left;
+    /*border: 3px solid darkmagenta;*/
+}
+
+#admin_house_table th,td{
+    width: auto;
+}

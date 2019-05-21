@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>收藏排行榜</title>
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="stylesheet" type="text/css" href="css/ranking-list.css">
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/getParameter.js"></script>
+        <script>
+            $(function () {
+
+
+                var mixPrice = getParameter("mixPrice");
+
+                var maxPrice = getParameter("maxPrice");
+
+                var hname = getParameter("hname");
+
+                if(hname){
+
+                    hname = window.decodeURIComponent(hname);
+                }
+                //当页码加载完成后，调用load方法，发送ajax请求加载数据
+                load(mixPrice,maxPrice,null,hname);
+
+                $("#rank-button").click(function () {
+
+                    var hname = $("#rank-input-hname").val();
+
+                    var mixPrice = $("#rank-input-mixPrice").val();
+
+                    var maxPrice = $("#rank-input-maxPrice").val();
+
+                    location.href="http://localhost/travel/favoriterank.html?hname="+hname+"&mixPrice="+mixPrice+"&maxPrice="+maxPrice;
+                });
+
+            });
+
+
+
+            function load(mixPrice,maxPrice ,currentPage,hname){
+
+                $.get("house/favoriteRank",{mixPrice:mixPrice,maxPrice:maxPrice,currentPage:currentPage,hname:hname},function (pb) {
+
+                    $("#totalPage").html(pb.totalPage);
+                    $("#totalCount").html(pb.totalCount);
+                    console.log(pb.list.length);
+
+
+                    var lis = "";
+
+                    var fristPage = '<li onclick="javascipt:load('+mixPrice+','+maxPrice+',1,'+hname+')"><a href="javascript:void(0)">首页</a></li>';
+
+                    //计算上一页的页码
+                    var beforeNum =  pb.currentPage - 1;
+                    if(beforeNum <= 0){
+                        beforeNum = 1;
+                    }
+
+                    var beforePage = '<li  onclick="javascipt:load('+mixPrice+','+maxPrice+','+beforeNum+','+hname+')" class="threeword"><a href="javascript:void(0)">上一页</a></li>';
+
+                    lis += fristPage;
+                    lis += beforePage;
+                    //展示分页
+
+                    var begin; // 开始位置
+                    var end ; //  结束位置
+
+                    if(pb.totalPage < 10){
+
+
+                        begin = 1;
+                        end = pb.totalPage;
+                    }else{
+
+
+                        begin = pb.currentPage - 5 ;
+                        end = pb.currentPage + 4 ;
+
+                        //如果前边不够5个，后边补齐10个
+                        if(begin < 1){
+                            begin = 1;
+                            end = begin + 9;
+                        }
+
+                        //如果后边不足4个，前边补齐10个
+                        if(end > pb.totalPage){
+                            end = pb.totalPage;
+                            begin = end - 9 ;
+                        }
+                    }
+
+
+                    for (var i = begin; i <= end ; i++) {
+                        var li;
+
+                        if(pb.currentPage == i){
+
+                            li = '<li class="curPage" onclick="javascript:load('+mixPrice+','+maxPrice+','+i+','+hname+')"><a href="javascript:void(0)">'+i+'</a></li>';
+
+                        }else{
+
+                            li = '<li onclick="javascript:load('+mixPrice+','+maxPrice+','+i+','+hname+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                        }
+
+                        lis += li;
+                    }
+
+
+
+                    var lastPage = '<li onclick="javascript:load('+mixPrice+','+maxPrice+','+pb.totalPage+','+hname+')" class="threeword"><a href="javascript:void(0)">末页</a></li>';
+
+                    var afterNum =  pb.currentPage + 1;
+                    if(afterNum >= pb.totalPage){
+                        afterNum =pb.totalPage;
+                    }
+
+                    var nextPage = '<li onclick="javascript:load('+mixPrice+','+maxPrice+','+afterNum+','+hname+')" class="threeword"><a href="javascript:void(0)">下一页</a></li>';
+
+                    lis += nextPage;
+                    lis += lastPage;
+
+
+                    $("#pageNum").html(lis);
+
+                    var house_lis = "";
+                    for (var i = 0; i < pb.list.length; i++) {
+
+                        var house = pb.list[i];
+                        var sequence = i+1;
+                        var li = '<li>\n' +
+                            '                        <span class="num two">'+sequence+'</span>\n' +
+                            '                        <a href="house_detail.html?hid='+house.hid+'"><img src="'+house.himage+'" alt=""></a>\n' +
+                            '                        <h4><a href="house_detail.html?hid='+house.hid+'">'+house.hname+'</a></h4>\n' +
+                            '                        <p>\n' +
+                            '                            <b class="price">&yen;<span>'+house.price+'</span>起</b>\n' +
+                            '                            <span class="shouchang">已收藏'+house.count+'次</span>\n' +
+                            '                        </p>\n' +
+                            '                    </li>';
+                        house_lis += li;
+                    }
+                    $("#favoriteRank").html(house_lis);
+
+
+                    window.scrollTo(0,0);
+                });
+
+            }
+        </script>
+
+    </head>
+    <body>
+
+    <div id="header"></div>
+        <div class="contant">
+            <div class="shaixuan">
+                <span>线路名称</span>
+                <input type="text" id="rank-input-hname">
+                <span>金额</span>
+                <input type="text" id="rank-input-mixPrice">~<input type="text" id="rank-input-maxPrice">
+                <button id="rank-button" href="javascript:;">搜索</button>
+            </div>
+            <div class="list clearfix">
+                <ul id="favoriteRank">
+                    <!--<li>-->
+                        <!--<span class="num one">1</span>-->
+                        <!--<a href="house_detail.html"><img src="images/jiangxuan_4.jpg" alt=""></a>-->
+                        <!--<h4><a href="house_detail.html">【尾单特卖】全国-曼谷6-7天自由行 泰国出境旅游 特价往6-7天自由行 泰国出境旅游 特价往..</a></h4>-->
+                        <!--<p>-->
+                            <!--<b class="price">&yen;<span>899</span>起</b>-->
+                            <!--<span class="shouchang">已收藏450次</span>-->
+                        <!--</p>-->
+                    <!--</li>-->
+
+                </ul>
+
+            </div>
+            <div class="page_num_inf">
+                <i></i> 共
+                <span id="totalPage">12</span>页<span id="totalCount">132</span>条
+            </div>
+            <div class="pageNum">
+                <ul id="pageNum">
+
+                </ul>
+            </div>
+        </div>
+    	
+
+   		 <div id="footer"></div>
+
+    <script type="text/javascript" src="js/include.js"></script>
+    </body>
+</html>

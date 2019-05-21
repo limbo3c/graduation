@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传房源</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/house_upload.css">
+    <link rel="stylesheet" href="css/layui.css" media="all">
+    <script src="js/jquery-3.3.1.js"></script>
+
+    <script>
+
+        $(function () {
+
+            $("#registerForm").submit(function(){
+                    $.post("house/houseLoad",$(this).serialize(),function(data){
+
+                        if(data.flag){
+                            location.href="http://localhost/travel/uploadimage.html";
+                        }else{
+                            $("#errorMsg").html(data.errorMsg);
+
+                        }
+                    });
+
+                return false;
+            });
+
+        });
+
+        $(document).ready(function(){
+            //为外面的盒子绑定一个点击事件
+            $("#uploadImgBtn").click(function(){
+                /*
+                1、先获取input标签
+                2、给input标签绑定change事件
+                3、把图片回显
+                 */
+//            1、先回去input标签
+                var $input = $("#file");
+                console.log("input:"+$input)
+
+//            2、给input标签绑定change事件
+                $input.on("change" , function(){
+                    console.log(this)
+                    //补充说明：因为我们给input标签设置multiple属性，因此一次可以上传多个文件
+                    //获取选择图片的个数
+                    var files = this.files;
+                    var length = files.length;
+                    console.log("选择了"+length+"张图片");
+                    //3、回显
+                    $.each(files,function(key,value){
+                        //每次都只会遍历一个图片数据
+                        var div = document.createElement("div"),
+                            img = document.createElement("img");
+                        div.className = "pic";
+
+                        var fr = new FileReader();
+                        fr.onload = function(){
+                            img.src=this.result;
+                            img.style="width:40px;height:40px";
+                            div.appendChild(img);
+                            // document.body.appendChild(div);
+                            document.getElementById("uploadImgBtn").appendChild(div);
+                        }
+                        fr.readAsDataURL(value);
+
+                    })
+
+                })
+                //把这下面的注释掉即可
+//            //4、我们把当前input标签的id属性remove
+//            $input.removeAttr("id");
+//            //我们做个标记，再class中再添加一个类名就叫test
+//            var newInput = '<input class="uploadImg test" type="file" name="file" multiple id="file">';
+//            $(this).append($(newInput));
+
+            })
+
+        })
+
+    </script>
+
+</head>
+<body>
+<div id="header"></div>
+<div class="rg_layout">
+    <div class="rg_form clearfix">
+        <div class="rg_form_left">
+            <p>房源信息</p>
+
+        </div>
+
+        <div class="rg_form_center">
+            <div id="errorMsg" style="color:red;text-align: center"></div>
+
+            <form id="registerForm" action="house/houseLoad" method="post" enctype="multipart/form-data">
+                <!--提交处理请求的标识符-->
+
+
+
+                <table style="margin-top: 25px;">
+                    <tr>
+                        <td class="td_left">
+                            <label for="hname">房屋名称</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="hname" name="hname" placeholder="请输入房屋名称">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="inChina">国内/境外</label>
+                        </td>
+                        <td class="td_right" >
+                            <div style="margin-left: 50px">
+                            <input type="radio" id="inChina" name="inChina" value="1" checked> 国内
+                            <input type="radio" name="inChina" value="0"> 境外
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="city">地区/城市</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="city" name="city" placeholder="请输入地区">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="location">详细地址</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="location" name="location" placeholder="请输入详细地址">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">
+                            <label for="houseIntroduce">补充说明</label>
+                        </td>
+                        <td class="td_right gender">
+                            <input type="text" id="houseIntroduce" name="houseIntroduce" placeholder="请输入补充说明">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="peopleNumber">宜住人数</label>
+                        </td>
+                        <td class="td_right gender">
+                            <input type="text" id="peopleNumber" name="peopleNumber" placeholder="请输入宜住人数">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="houseNumber">同类房屋数量</label>
+                        </td>
+                        <td class="td_right gender">
+                            <input type="text" id="houseNumber" name="houseNumber" placeholder="请输入房屋数量">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="price">房屋价格</label>
+                        </td>
+                        <td class="td_right gender">
+                            <input type="text" id="price" name="price" placeholder="请输入房屋价格">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <!--<label for="file"></label>-->
+                        </td>
+                        <td class="td_right gender">
+                            <!--<div class="layui-upload">-->
+                                <!--<button type="button" class="layui-btn" id="himage">上传图片</button>-->
+                                <!--<div class="layui-upload-list">-->
+                                    <!--<img class="layui-upload-img" id="demo1" style="width: 40px ;height: 40px;">-->
+                                    <!--<p id="demoText"></p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="uploadImgBtn" id="uploadImgBtn">-->
+                                <!--<input class="uploadImg" type="file" name="file" multiple id="file">-->
+
+                            <!--</div>-->
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="td_left">
+                        </td>
+                        <td class="td_right check">
+                            <input type="submit" class="submit" value="提交" >
+                            <span id="msg" style="color: red;"></span>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="rg_form_right">
+
+        </div>
+    </div>
+</div>
+<div id="footer"></div>
+<script type="text/javascript" src="js/include.js"></script>
+<script src="layui/layui.js" charset="utf-8"></script>
+<!--<script>-->
+    <!--layui.use('upload', function(){-->
+        <!--var $ = layui.jquery-->
+            <!--,upload = layui.upload;-->
+
+        <!--//图片上传-->
+        <!--var uploadInst = upload.render({-->
+            <!--elem: '#himage'-->
+            <!--,url: 'house/houseLoad'-->
+            <!--,method:'get'-->
+            <!--,response:{-->
+                <!--statusName:'code'-->
+                <!--,statusCode: 0-->
+                <!--,msgName:'msg'-->
+                <!--,countName:'count'-->
+                <!--,dataName:'data'-->
+            <!--}-->
+            <!--,before: function(obj){-->
+                <!--obj.preview(function(index, file, result){-->
+                    <!--$('#demo1').attr('src', result); //图片链接（base64）-->
+                <!--});-->
+            <!--}-->
+            <!--,done: function(res){-->
+                <!--//如果上传失败-->
+                <!--if(res.code > 0){-->
+                    <!--return layer.msg('上传失败');-->
+                <!--}-->
+                <!--//上传成功-->
+            <!--}-->
+            <!--,error: function(){-->
+                <!--//演示失败状态，并实现重传-->
+                <!--var demoText = $('#demoText');-->
+                <!--demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');-->
+                <!--demoText.find('.demo-reload').on('click', function(){-->
+                    <!--uploadInst.upload();-->
+                <!--});-->
+            <!--}-->
+        <!--});-->
+
+    <!--});-->
+<!--</script>-->
+</body>
+</html>
