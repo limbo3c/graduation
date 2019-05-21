@@ -313,6 +313,7 @@ public class HouseDaoImpl implements HouseDao {
             params.add("%"+hnameKey+"%");
         }
 
+
         sql = sb.toString();
 
         return template.queryForObject(sql,Integer.class,params.toArray());
