@@ -319,4 +319,45 @@ public class HouseDaoImpl implements HouseDao {
 
         return template.queryForObject(sql,Integer.class,params.toArray());
     }
+
+    @Override
+    public void decrement(int hid){
+        String sql = "update tab_house set houseNumber=houseNumber - 1 where hid = ?";
+
+        template.update(sql,hid);
+        int houseNumber = findHouseNumber(hid);
+        if (houseNumber <=0){
+            lowerShelf(hid);
+        }
+    }
+
+    @Override
+    public void increment(int hid){
+        String sql = "update tab_house set houseNumber=houseNumber + 1 where hid = ?";
+        int houseNumber =  findHouseNumber(hid);
+        if (houseNumber==0){
+            upperShelf(hid);
+        }
+        template.update(sql,hid);
+    }
+
+    @Override
+    public int findHouseNumber(int hid){
+        String sql = "select houseNumber from tab_house where hid = ?";
+        return template.queryForObject(sql,Integer.class,hid);
+    }
+
+    @Override
+    public void lowerShelf(int hid){
+        String sql = "update tab_house set hflag = 0 where hid = ?";
+        template.update(sql,hid);
+
+    }
+
+    @Override
+    public void upperShelf(int hid){
+        String sql = "update tab_house set hflag = 1 where hid = ?";
+        template.update(sql,hid);
+    }
+
 }

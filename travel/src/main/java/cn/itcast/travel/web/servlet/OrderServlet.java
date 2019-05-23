@@ -1,10 +1,10 @@
 package cn.itcast.travel.web.servlet;
-
 import cn.itcast.travel.domain.*;
 import cn.itcast.travel.service.HouseService;
 import cn.itcast.travel.service.OrderService;
 import cn.itcast.travel.service.impl.HouseServiceImpl;
 import cn.itcast.travel.service.impl.OrderServiceImpl;
+import cn.itcast.travel.util.DateComparisonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -24,7 +24,7 @@ public class OrderServlet extends BaseServlet{
     private HouseService houseService = new HouseServiceImpl();
 
     public void createOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String startAndEndDate = request.getParameter("startAndEndDate");
         Map<String, String[]> map = request.getParameterMap();
 
         Order order = new Order();
@@ -42,7 +42,26 @@ public class OrderServlet extends BaseServlet{
 
         String hid = request.getParameter("hid");
         House house = houseService.findOne(hid);
-        order.setPrice(house.getPrice());
+        String startDate = startAndEndDate.substring(0,10);
+        String endDate = startAndEndDate.substring(13);
+        DateComparisonUtil dateComparisonUtil = new DateComparisonUtil();
+        int days = dateComparisonUtil.getDays(startDate,endDate)+1;
+        System.out.println(days);
+        double price =house.getPrice()*days;
+//        System.out.println("startDate:"+startDate);
+//        System.out.println("endDate:"+endDate);
+//        int startYear = Integer.parseInt(startDate.substring(0,4));
+//        int startMonth =Integer.parseInt(startDate.substring(5,7));
+//        int startDay = Integer.parseInt(startDate.substring(8));
+//        int endYear = Integer.parseInt(endDate.substring(0,4));
+//        int endMonth =Integer.parseInt(endDate.substring(5,7));
+//        int endDay = Integer.parseInt(endDate.substring(8));
+//        int yearDiffer =endYear - startYear;
+//        int monthDiffer = endMonth - startMonth;
+//        int dayDiffer = endDay - startDay;
+
+
+        order.setPrice(price);
         order.setSid(house.getSid());
         order.setHid(Integer.valueOf(hid));
         String name=new String(request.getParameter("name").getBytes("8859_1"), "utf8");

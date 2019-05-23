@@ -1,6 +1,8 @@
 package cn.itcast.travel.service.impl;
 
+import cn.itcast.travel.dao.HouseDao;
 import cn.itcast.travel.dao.OrderDao;
+import cn.itcast.travel.dao.impl.HouseDaoImpl;
 import cn.itcast.travel.dao.impl.OrderDaoImpl;
 import cn.itcast.travel.domain.Order;
 import cn.itcast.travel.domain.PageBean;
@@ -14,6 +16,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDao orderDao = new OrderDaoImpl() ;
 
+    private HouseDao houseDao = new HouseDaoImpl();
 
     //完结订单
     @Override
@@ -44,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
     public  boolean endPay(Order order){
         if (order != null){
             orderDao.finishPay(order);
+            houseDao.increment(order.getHid());
             return true;
         }else {
             return false;
@@ -63,6 +67,8 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateDate(df.format(new Date()));
 
         orderDao.save(order);
+
+        houseDao.decrement(order.getHid());
 
         return true;
     }

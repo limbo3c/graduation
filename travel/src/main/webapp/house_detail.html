@@ -17,10 +17,11 @@
 <div id="header"></div>
 
     <div class="wrap">
-        <div class="bread_box">
+        <div class="bread_box" id="crumbs">
             <a href="/">首页</a>
             <span> &gt;</span>
-            <a href="#">国内</a><span> &gt;</span>
+            <a href="#">国内</a>
+            <span> &gt;</span>
             <a href="#">xxxxx</a>
         </div>
         <div class="prosum_box">
@@ -193,8 +194,15 @@
             $("#address").html(house.seller.address);
             //设置收藏次数
             $("#favoriteCount").html("已收藏"+house.count+"次");
-
-
+            var crumbstr = '';
+            crumbstr += '<a href="index.html">首页</a><span> &gt;</span>';
+            if (house.inChina == "1") crumbstr += '<a href="#">国内</a>';
+            if (house.inChina == '0') crumbstr += '<a href="#">境外</a>';
+            crumbstr += '<span> &gt;</span>';
+            crumbstr += '<a href="house_list.html?cid='+house.cid+'">'+house.city+'</a>';
+            crumbstr += '<span> &gt;</span>';
+            crumbstr += '<a href="#">'+house.hname+'</a>';
+            $("#crumbs").html(crumbstr);
             //图片展示
 
             var ddstr = '<a class="up_img up_img_disable"></a>';

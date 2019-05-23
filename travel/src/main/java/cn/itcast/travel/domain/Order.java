@@ -38,6 +38,9 @@ public class Order implements Serializable {
 
     private float score;    //评分
 
+//    private House house;
+//    private Seller seller;
+
     public Order(){
 
     }

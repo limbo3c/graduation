@@ -67,4 +67,18 @@ public interface HouseDao {
 
     int favoriteRankCount(String hnameKey,int mixPrice,int maxPrice);
 
+    //房源数量减一
+    void decrement(int hid);
+
+    //房源数量加一
+    void increment(int hid);
+
+    int findHouseNumber(int hid);
+
+    //下架
+    void lowerShelf(int hid);
+
+    //上架
+    void upperShelf(int hid);
+
 }

@@ -128,7 +128,7 @@
                     for (var i = 0; i < pb.list.length; i++) {
 
                         var house = pb.list[i];
-                        var sequence = i+1;
+                        var sequence = (pb.currentPage-1)*10+ i+1;
                         var li = '<li>\n' +
                             '                        <span class="num two">'+sequence+'</span>\n' +
                             '                        <a href="house_detail.html?hid='+house.hid+'"><img src="'+house.himage+'" alt=""></a>\n' +
