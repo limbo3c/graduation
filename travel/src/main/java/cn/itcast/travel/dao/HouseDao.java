@@ -81,4 +81,6 @@ public interface HouseDao {
     //上架
     void upperShelf(int hid);
 
+    void update(House house);
+
 }

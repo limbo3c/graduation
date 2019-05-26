@@ -12,4 +12,8 @@ public interface UserService {
     User login(User user);
 
     PageBean<User> allUserPageQuery( int currentPage, int pageSize);
+
+    boolean seal(int uid);
+
+    boolean unseal(int uid);
 }

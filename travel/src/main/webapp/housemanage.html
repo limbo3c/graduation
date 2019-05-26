@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>房源管理</title>
+    <link rel="stylesheet" href="css/house_upload.css">
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="css/common.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/myorder.css">
-    <link rel="stylesheet" href="css/layui.css" media="all">
-    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/layui.css" media="all">
     <script src="js/getParameter.js"></script>
     <style>
         body{margin: 10px;}
+
+
     </style>
 
 
@@ -38,6 +41,51 @@
 
             });
         }
+
+
+        function changehouseinfo(ths) {
+            var ele = $(ths).parent().prev().prev();
+            var score = document.getElementById("score");
+            score.value=ele.text();
+            ele = $(ele).prev();
+            var count = document.getElementById("count");
+            count.value=ele.text();
+
+            ele = $(ele).prev();
+            document.getElementById("price").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("houseNumber").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("peopleNumber").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("houseIntroduce").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("location").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("city").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("inChina").value=ele.text();
+            ele = $(ele).prev();
+            document.getElementById("hname").value=ele.text();
+            ele = $(ele).prev().prev();
+            document.getElementById("hid").value=ele.text();
+        }
+
+        $(function () {
+            $("#registerForm").submit(function(){
+                $.post("house/updateHouse",$(this).serialize(),function(data){
+
+                    if(data.flag){
+                        location.reload();
+                    }else{
+                        $("#errorMsg").html(data.errorMsg);
+
+                    }
+                });
+
+                return false;
+            });
+        });
 
 
         function load(currentPage){
@@ -129,22 +177,24 @@
 
                     var house = pb.list[i];
 
-                    var li = ' <tr>\n' +
+                    var li = ' <tr style="height: 10px;">\n' +
                         '                                    <td>'+house.hid+'</td>\n' +
                         '                                    <td>'+house.sid+'</td>\n' +
-                        '                                    <td>'+house.hname+'</td>\n' +
+                        '                                    <td><div style="width: 250px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">'+house.hname+'</div></td>\n' +
                         '                                    <td>'+house.inChina+'</td>\n' +
-                        '                                    <td>'+house.city+'</td>\n' +
+                        '                                    <td style="width: 50px">'+house.city+'</td>\n' +
+                        '                                    <td>'+house.location+'</td>\n' +
+                        '                                    <td><div style="width: 300px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">'+house.houseIntroduce+'</div></td>\n' +
                         '                                    <td>'+house.peopleNumber+'</td>\n' +
                         '                                    <td>'+house.houseNumber+'</td>\n' +
                         '                                    <td>'+house.price+'</td>\n' +
-                        '                                    <td>'+house.location+'</td>\n' +
                         '                                    <td>'+house.count+'</td>\n' +
-                        // '                                    <td>'+house.hflag+'</td>\n' +
                         '                                    <td>'+house.score+'</td>\n';
                         if (house.hflag == '1')li+= '        <td><a class="btn" onclick="changehflag('+house.hid+','+house.hflag+')" style="background-color: #b4bfcd ;margin-right: 20px">下架</a></td>\n';
                         else if (house.hflag == '0' ) li+= '<td><a class="btn" onclick="changehflag('+house.hid+','+house.hflag+')" style="background-color: #b4bfcd ;margin-right: 20px">上架</a></td>\n';
-                        li+='<td><a class="btn" onclick="deleteHouse('+house.hid+')" style="background-color: #b4bfcd ;margin-right: 20px">删除</a></td>\n';
+                        li+='<td><button id="'+house.hid+'" onclick="changehouseinfo(this)" class="btn" data-toggle="modal" data-target="#myModal" style="background-color: #b4bfcd ;margin-right: 20px">\n' +
+                            '        编辑\n' +
+                            '    </button></td>\n';
                         li+='</tr>';
                     house_lis += li;
                 }
@@ -161,6 +211,143 @@
 
 </head>
 <body>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title" id="myModalLabel">编辑房源信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="rg_form clearfix" >
+                <div class="rg_form_center" >
+                <form id="registerForm" >
+                    <table style="margin-left: 65px" >
+                        <tr>
+                            <td class="td_left">
+                                <label for="hid"></label>
+                            </td>
+                            <td class="td_right">
+                                <input type="hidden" id="hid" name="hid" value="" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                                <label for="hname">房屋名称</label>
+                            </td>
+                            <td class="td_right">
+                                <input type="text" id="hname" name="hname" value="">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left">
+                                <label for="inChina">国内/境外</label>
+                            </td>
+                            <td class="td_right" >
+                                <div style="margin-left: 50px">
+                                    <input type="radio" id="inChina" name="inChina" value="1" checked> 国内
+                                    <input type="radio" name="inChina" value="0"> 境外
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                                <label for="city">地区/城市</label>
+                            </td>
+                            <td class="td_right">
+                                <input type="text" id="city" name="city" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                                <label for="location">详细地址</label>
+                            </td>
+                            <td class="td_right">
+                                <input type="text" id="location" name="location" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                                <label for="houseIntroduce">补充说明</label>
+                            </td>
+                            <td class="td_right gender">
+                                <input type="text" id="houseIntroduce" name="houseIntroduce" >
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left">
+                                <label for="peopleNumber">宜住人数</label>
+                            </td>
+                            <td class="td_right gender">
+                                <input type="text" id="peopleNumber" name="peopleNumber" >
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left">
+                                <label for="houseNumber">同类房屋数量</label>
+                            </td>
+                            <td class="td_right gender">
+                                <input type="text" id="houseNumber" name="houseNumber" >
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left">
+                                <label for="price">房屋价格</label>
+                            </td>
+                            <td class="td_right gender">
+                                <input type="text" id="price" name="price" >
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left">
+                                <label for="count">收藏数</label>
+                            </td>
+                            <td class="td_right gender">
+                                <input type="text" id="count" name="count">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left">
+                                <label for="score">评分</label>
+                            </td>
+                            <td class="td_right gender">
+                                <input type="text" id="score" name="score" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                            </td>
+                            <td class="td_right gender">
+                            </td>
+                        </tr>
+
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <input  type="submit" class="btn btn-primary">
+                    </div>
+                </form>
+                </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+
 
 
 <div>
@@ -183,11 +370,11 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">解决方案</a>
+                    <a href="javascript:;">其他</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="">移动模块</a></dd>
-                        <dd><a href="">后台模版</a></dd>
-                        <dd><a href="">电商平台</a></dd>
+                        <dd><a href="">卖家审核</a></dd>
+                        <dd><a href="">房源审核</a></dd>
+                        <dd><a href="">用户封禁</a></dd>
                     </dl>
                 </li>
                 <!--<li class="layui-nav-item"><a href=""></a></li>-->
@@ -204,17 +391,17 @@
                                     <table class="table table-hover table-striped" style="border: 3px solid #07428b;" id="admin_house_table">
                                         <thead>
                                         <tr>
-                                            <th>房源ID</th>
-                                            <th>卖家用户名</th>
+                                            <th>ID</th>
+                                            <th>房东</th>
                                             <th>房源名称</th>
                                             <th>国内外</th>
                                             <th>城市</th>
-                                            <th>宜住人数</th>
-                                            <th>房源库存</th>
-                                            <th>价格</th>
                                             <th>详细地址</th>
-                                            <th>收藏数</th>
-                                            <!--<th>上下架</th>-->
+                                            <th>介绍</th>
+                                            <th>宜住人数</th>
+                                            <th>库存</th>
+                                            <th>价格</th>
+                                            <th>收藏</th>
                                             <th>评分</th>
                                             <th></th>
                                             <th></th>

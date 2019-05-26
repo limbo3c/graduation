@@ -5,6 +5,7 @@ import cn.itcast.travel.domain.PageBean;
 import cn.itcast.travel.domain.House;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface HouseService {
@@ -59,4 +60,6 @@ public interface HouseService {
     List<House> siderHouse();
 
     PageBean<House> favoriteRank(String hname,int mixPrice,int maxPrice,int currentPage,int pageSize);
+
+    boolean update(House house);
 }

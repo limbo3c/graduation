@@ -116,7 +116,7 @@ public class HouseServlet extends BaseServlet {
 
 
         String hid = request.getParameter("hid");
-
+        System.out.println(hid);
         House house = houseService.findOne(hid);
 
         writeValue(house,response);
@@ -201,8 +201,6 @@ public class HouseServlet extends BaseServlet {
 //        }
 
 
-
-
         Map<String, String[]> map = request.getParameterMap();
 
         House house = new House();
@@ -213,7 +211,16 @@ public class HouseServlet extends BaseServlet {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        house.setSid(10);
+        User user = (User) request.getSession().getAttribute("user");
+        int uid;
+        if(user == null){
+            //用户尚未登录
+            return ;
+        }else{
+            //用户已经登录
+            uid = user.getUid();
+        }
+        house.setSid(uid);
         boolean flag = houseService.load(house);
 
         ResultInfo info = new ResultInfo();
@@ -495,5 +502,33 @@ public class HouseServlet extends BaseServlet {
 
         //将pageBean对象序列化为json
         writeValue(pb,response);
+    }
+
+    public void updateHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        Map<String, String[]> map = request.getParameterMap();
+
+        House house = new House();
+        try {
+            BeanUtils.populate(house,map);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        boolean flag = houseService.update(house);
+        ResultInfo info = new ResultInfo();
+        if(flag){
+
+            info.setFlag(true);
+        }else{
+
+            info.setFlag(false);
+            info.setErrorMsg("修改失败!");
+        }
+
+        writeValue(info,response);
+
     }
 }

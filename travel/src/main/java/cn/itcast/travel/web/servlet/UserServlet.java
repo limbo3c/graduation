@@ -200,4 +200,44 @@ public class UserServlet extends BaseServlet {
         //将pageBean对象序列化为json
         writeValue(pb,response);
     }
+
+
+    public void seal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uidStr = request.getParameter("uid");
+        int uid = Integer.parseInt(uidStr);
+        boolean flag = service.seal(uid);
+        ResultInfo info = new ResultInfo();
+
+        if(flag){
+
+            info.setFlag(true);
+        }else{
+
+            info.setFlag(false);
+            info.setErrorMsg("封禁失败!");
+        }
+
+        writeValue(info,response);
+
+    }
+
+
+
+    public void unseal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uidStr = request.getParameter("uid");
+        int uid = Integer.parseInt(uidStr);
+        boolean flag = service.unseal(uid);
+        ResultInfo info = new ResultInfo();
+
+        if(flag){
+
+            info.setFlag(true);
+        }else{
+
+            info.setFlag(false);
+            info.setErrorMsg("解封失败!");
+        }
+
+        writeValue(info,response);
+    }
 }

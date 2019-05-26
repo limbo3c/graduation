@@ -134,4 +134,16 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+    @Override
+    public void seal(int uid){
+        String sql = "update tab_user set status = 'N' where uid = ?";
+        template.update(sql,uid);
+    }
+
+    @Override
+    public void unseal(int uid){
+        String sql = "update tab_user set status = 'Y' where uid = ?";
+        template.update(sql,uid);
+    }
+
 }

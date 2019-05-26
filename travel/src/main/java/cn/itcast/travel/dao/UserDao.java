@@ -29,4 +29,8 @@ public interface UserDao {
 
     //用户数
     int findUserCount();
+
+    void seal(int uid);
+
+    void unseal(int uid);
 }

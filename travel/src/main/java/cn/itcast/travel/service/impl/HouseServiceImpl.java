@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class HouseServiceImpl implements HouseService {
     private HouseDao houseDao = new HouseDaoImpl();
@@ -30,7 +31,7 @@ public class HouseServiceImpl implements HouseService {
         pb.setCurrentPage(currentPage);
         //每页显示条数
         pb.setPageSize(pageSize);
-        
+
         //总记录数
         int totalCount = houseDao.findTotalCount(cid,hname);
         pb.setTotalCount(totalCount);
@@ -273,5 +274,17 @@ public class HouseServiceImpl implements HouseService {
 
 
         return pb;
+    }
+
+    @Override
+    public boolean update(House house){
+
+        if(house!=null){
+            int cid = categoryDao.findByCname(house.getCity()).getCid();
+            house.setCid(cid);
+            houseDao.update(house);
+            return true;
+        }
+        return false;
     }
 }

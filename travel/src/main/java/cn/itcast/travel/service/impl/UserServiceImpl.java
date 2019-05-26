@@ -83,4 +83,29 @@ public class UserServiceImpl implements UserService {
         return pb;
     }
 
+
+    @Override
+    public boolean seal(int uid){
+        User user = userDao.findByUid(uid);
+        if(user != null){
+            //2.调用dao的修改激活状态的方法
+            userDao.seal(uid);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean unseal(int uid){
+        User user = userDao.findByUid(uid);
+        if(user != null){
+            //2.调用dao的修改激活状态的方法
+            userDao.unseal(uid);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

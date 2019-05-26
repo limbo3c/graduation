@@ -123,9 +123,10 @@
                         '                                    <td>'+user.birthday+'</td>\n' +
                         '                                    <td>'+user.telephone+'</td>\n' +
                         '                                    <td>'+user.email+'</td>\n' +
-                        '                                    <td>'+user.status+'</td>\n' +
-                        '                                    <td></td>\n' +
-                        '                                </tr>';
+                        '                                    <td>'+user.status+'</td>\n';
+                    if (user.status == 'Y')li+= '        <td><a class="btn" onclick="seal('+user.uid+')" style="background-color: #b4bfcd ;margin-right: 20px">封禁</a></td>\n';
+                    else if (user.status == 'N' ) li+= '<td><a class="btn" onclick="unseal('+user.uid+')" style="background-color: #b4bfcd ;margin-right: 20px">解封</a></td>\n';
+                    li+='</tr>';
                     user_lis += li;
                 }
 
@@ -134,6 +135,30 @@
                 window.scrollTo(0,0);
             });
 
+        }
+
+        function seal(uid) {
+            $.get("user/seal",{uid:uid},function (data) {
+                if(data.flag){
+                    location.reload();
+                }else{
+                    $("#errorMsg").html(data.errorMsg);
+
+                }
+
+            });
+        }
+
+        function unseal(uid) {
+            $.get("user/unseal",{uid:uid},function (data) {
+                if(data.flag){
+                    location.reload();
+                }else{
+                    $("#errorMsg").html(data.errorMsg);
+
+                }
+
+            });
         }
 
 
@@ -163,11 +188,11 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">解决方案</a>
+                    <a href="javascript:;">其他</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="">移动模块</a></dd>
-                        <dd><a href="">后台模版</a></dd>
-                        <dd><a href="">电商平台</a></dd>
+                        <dd><a href="">卖家审核</a></dd>
+                        <dd><a href="">房源审核</a></dd>
+                        <dd><a href="">用户封禁</a></dd>
                     </dl>
                 </li>
                 <!--<li class="layui-nav-item"><a href=""></a></li>-->
@@ -191,7 +216,7 @@
                                             <th>生日</th>
                                             <th>电话</th>
                                             <th>邮箱</th>
-                                            <th>激活状态</th>
+                                            <th>状态</th>
                                             <th></th>
                                         </tr>
                                         </thead>

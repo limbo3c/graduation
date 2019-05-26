@@ -360,4 +360,24 @@ public class HouseDaoImpl implements HouseDao {
         template.update(sql,hid);
     }
 
+    @Override
+    public void update(House house){
+        String sql = "update tab_house set hname = ? , inChina = ? , city = ? , location = ? , houseIntroduce = ? , peopleNumber = ? , houseNumber = ? , price = ? , cid = ? , count = ?  , score = ? where hid = ?" ;
+
+
+        template.update(sql,house.getHname(),
+                house.getInChina(),
+                house.getCity(),
+                house.getLocation(),
+                house.getHouseIntroduce(),
+                house.getPeopleNumber(),
+                house.getHouseNumber(),
+                house.getPrice(),
+                house.getCid(),
+                house.getCount(),
+                house.getScore(),
+                house.getHid()
+        );
+    }
+
 }
