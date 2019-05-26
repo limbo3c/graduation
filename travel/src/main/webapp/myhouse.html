@@ -23,6 +23,10 @@
             load(uid,null);
         });
 
+        function goupload(){
+            location.href="house_upload.html";
+        }
+
         function houseinfo(ths) {
             var hid = ths.id;
 
@@ -298,9 +302,9 @@
 </div>
 <div class="page_one">
     <div class="contant">
-        <div class="crumbs">
-            <img src="images/search.png" alt="">
-            <p><span>搜索结果</span></p>
+        <div class="crumbs" >
+            <!--<img src="images/search.png" alt="">-->
+            <p><span>我的房屋<button class="btn" onclick="goupload()" style="background-color: #5ccdbe;color: white;position: fixed;top: 210px; right: 500px;">添加房源</button></span></p>
         </div>
         <div class="xinxi clearfix">
             <div class="left">

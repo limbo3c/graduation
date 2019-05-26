@@ -10,6 +10,9 @@ public class Reply implements Serializable {
     private String content;
     private int forDiscuss;
     private String createDate;
+    public Reply(){
+
+    }
 
     public Reply(int rid, int uid, int aid, String forWho, String content, int forDiscuss, String createDate) {
         this.rid = rid;

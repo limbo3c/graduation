@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -117,10 +117,14 @@
                         '                                    <td>'+order.sid+'</td>\n' +
                         '                                    <td>'+order.startAndEndDate+'</td>\n' +
                         '                                    <td>'+order.createDate+'</td>\n' +
-                        '                                    <td>'+order.telephone+'</td>\n' +
-                        '                                    <td>'+order.pay+'</td>\n' +
-                        '                                    <td>'+order.stage+'</td>\n' +
-                        '                                    <td>'+order.price+'</td>\n' +
+                        '                                    <td>'+order.telephone+'</td>\n';
+                    if (order.pay=='0') li+='<td>未支付</td>\n';
+                    if (order.pay=='1') li+='<td>已支付</td>\n';
+                    if (order.stage=='1') li+='<td>进行中</td>\n';
+                    if (order.stage=='2') li+='<td>已完结</td>\n';
+                    if (order.stage=='3') li+='<td>已退订</td>\n';
+
+                    li+='                                    <td>'+order.price+'</td>\n' +
                         '                                </tr>';
                     order_lis += li;
                 }
@@ -142,7 +146,7 @@
     <div class="contant">
         <div class="crumbs">
             <img src="images/search.png" alt="">
-            <p><span>搜索结果</span></p>
+            <p><span>我的订单</span></p>
         </div>
         <div class="xinxi clearfix">
             <div class="left">

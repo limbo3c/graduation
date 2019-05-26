@@ -4,11 +4,14 @@ import java.io.Serializable;
 
 public class Article implements Serializable {
     private int aid;
-    private int uid;
+    private int author;
     private String title;
     private String story;
     private String aimage;
     private String createDate;
+    private int fabulous;
+
+
 
     public String getCreateDate() {
         return createDate;
@@ -18,14 +21,26 @@ public class Article implements Serializable {
         this.createDate = createDate;
     }
 
-    public Article(int aid, int uid, String title, String story, String aimage, String createDate) {
+    public Article(){
 
+    }
+
+    public Article(int aid, int author, String title, String story, String aimage, String createDate, int fabulous) {
         this.aid = aid;
-        this.uid = uid;
+        this.author = author;
         this.title = title;
         this.story = story;
         this.aimage = aimage;
         this.createDate = createDate;
+        this.fabulous = fabulous;
+    }
+
+    public int getFabulous() {
+        return fabulous;
+    }
+
+    public void setFabulous(int fabulous) {
+        this.fabulous = fabulous;
     }
 
     public int getAid() {
@@ -36,12 +51,12 @@ public class Article implements Serializable {
         this.aid = aid;
     }
 
-    public int getUid() {
-        return uid;
+    public int getAuthor() {
+        return author;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setAuthor(int author) {
+        this.author = author;
     }
 
     public String getTitle() {

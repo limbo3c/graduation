@@ -10,6 +10,10 @@ public class Discuss implements Serializable {
     private String createDate;
     private String forWho;
 
+    public Discuss(){
+
+    }
+
     public Discuss(int did, int uid, int aid, String content, String createDate, String forWho) {
         this.did = did;
         this.uid = uid;
