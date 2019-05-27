@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章详情</title>
+    <link rel="stylesheet" type="text/css" href="css/article_comment.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/house-detail.css">
+    <style>
+        #aimage{
+            margin-top: 5px;
+        }
+        #title{
+            margin-top: 15px;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            margin-left: 100px;
+        }
+        #story{
+            font-size: 22px;
+            font-weight: 500;
+            position: center;
+            margin-left: 100px;
+            margin-bottom: 25px;
+        }
+        #article_story{
+            word-wrap: break-word;white-space : normal
+        }
+        pre{
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            overflow: auto;
+            word-break: break-all;
+            word-wrap: break-word;
+            width: 1000px;
+            background-color: white;
+            border: 0px;
+
+
+        }
+
+        #aimage img{
+            width: 1000px;
+            height: 500px;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header"></div>
+
+<div class="wrap">
+    <div class="bread_box" id="crumbs">
+        <a href="/">首页</a>
+        <span> &gt;</span>
+        <a href="#">国内</a>
+        <span> &gt;</span>
+        <a href="#">xxxxx</a>
+    </div>
+    <div class="prosum_box" style="border-left: 1px solid silver;border-right: 1px solid silver">
+
+        <div id="aimage">
+        </div>
+        <div>
+            <pre id="title"></pre>
+        </div>
+        <div id="article_story">
+            <pre id="story"> </pre>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="comments">
+        <span class="commentTitle">评论</span>
+
+        <div class="commentList">
+            <div>
+                <div class="box" id="J_Post" style="height: 200px;">
+
+                    <div class="box-content box-login" style="height: 100%;width: 100%;">
+                        <div class="box-textarea-block">
+                            <textarea class="box-textarea J_Textarea" id="J_Textarea" placeholder="说两句吧..."></textarea>
+                        </div>
+
+                        <div class="box-info" style="height: 70px">
+                            <div class="box-operate">
+                                <span class="box-avatar"> <img src="//thirdqq.qlogo.cn/g?b=sdk&amp;k=cDnVW1XGYPEmYGybNepssA&amp;s=40&amp;t=1497285533" width="100%" height="100%" /> </span>
+                                <b class="box-username">人生如茶</b>
+                                <!--<span class="box-tab J_ChangeUser">切换用户</span>-->
+                                <span class="box-operate-line">|</span>
+
+                            </div>
+                            <div class="box-commentBtn box-commentBtn--able J_PostBtn" id="J_PostBtn" onclick="publish_cmt();">
+                                发布评论
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="J_ShortComment">
+            <ul id="discuss">
+
+            </ul>
+            </div>
+            <div style="margin-top: 40px;margin-left: 55px">
+                <div class="page_num_inf">
+                    <i></i> 共
+                    <span id="totalPage">12</span>页<span id="totalCount">132</span>条
+                </div>
+                <div class="pageNum">
+                    <ul id="pageNum">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="footer"></div>
+<script src="js/jquery-3.3.1.js"></script>
+
+<script src="js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/include.js"></script>
+<script src="js/getParameter.js"></script>
+
+<script>
+
+    $(function () {
+
+
+        var aid = getParameter("aid");
+
+        //发送请求请求 house/findOne
+        $.get("article/findOneArticle",{aid:aid},function (article) {
+            //3.解析数据填充html
+            $("#title").html(article.title);
+            $("#story").html(article.story);
+            $("#fabulous").html(article.fabulous);
+            $("#aimage").html('<img src="'+article.aimage+'">');
+
+            var crumbstr = '';
+            crumbstr += '<a href="index.html">首页</a><span> &gt;</span>';
+            crumbstr += '<a href="article_list.html">文章</a>';
+            crumbstr += '<span> &gt;</span>';
+            // crumbstr += '<a href="house_list.html?cid='+house.cid+'">'+house.city+'</a>';
+            // crumbstr += '<span> &gt;</span>';
+            crumbstr += '<a href="#">'+article.title+'</a>';
+            $("#crumbs").html(crumbstr);
+
+        });
+    });
+
+    //
+    // $(function () {
+    //     // 发送请求，判断用户是否收藏过该线路
+    //     var aid = getParameter("aid");
+    //     $.get("house/isFavorite",{aid:aid},function (flag) {
+    //         if(flag){
+    //             // 用户已经收藏过
+    //             //<a  class="btn already" disabled="disabled">
+    //             //设置收藏按钮的样式
+    //             $("#favorite").addClass("already");
+    //             $("#favorite").attr("disabled","disabled");
+    //
+    //             //删除按钮的点击事件
+    //             $("#favorite").removeAttr("onclick");
+    //         }else{
+    //             // 用户没有收藏
+    //         }
+    //     });
+    //
+    //
+    //
+    // });
+    //
+    // //点击收藏按钮触发的方法
+    // function addFavorite(){
+    //     var aid = getParameter("aid");
+    //     //1判断用户是否登录
+    //     $.get("user/findOne",{},function (user) {
+    //         if(user){
+    //             //用户登录了
+    //             //添加功能
+    //             $.get("house/addFavorite",{aid:aid},function () {
+    //
+    //                 //代码刷新页面
+    //                 location.reload();
+    //             });
+    //
+    //         }else{
+    //             //用户没有登录
+    //             alert("您尚未登录，请登录");
+    //             location.href="http://localhost/travel/login.html";
+    //         }
+    //     })
+    // }
+
+
+</script>
+<script>
+
+    $(function () {
+
+
+        var aid = getParameter("aid");
+
+        //当页码加载完成后，调用load方法，发送ajax请求加载数据
+        load(aid,null);
+    });
+
+    function load(aid ,currentPage){
+
+        $.get("discuss/discussQuery",{aid:aid,currentPage:currentPage},function (pb) {
+
+            $("#totalPage").html(pb.totalPage);
+            $("#totalCount").html(pb.totalCount);
+
+
+            var lis = "";
+
+            var fristPage = '<li onclick="javascipt:load('+aid+',1)"><a href="javascript:void(0)">首页</a></li>';
+
+            //计算上一页的页码
+            var beforeNum =  pb.currentPage - 1;
+            if(beforeNum <= 0){
+                beforeNum = 1;
+            }
+
+            var beforePage = '<li  onclick="javascipt:load('+aid+','+beforeNum+')" class="threeword"><a href="javascript:void(0)">上一页</a></li>';
+
+            lis += fristPage;
+            lis += beforePage;
+            //展示分页
+
+            var begin; // 开始位置
+            var end ; //  结束位置
+
+            if(pb.totalPage < 10){
+
+
+                begin = 1;
+                end = pb.totalPage;
+            }else{
+
+
+                begin = pb.currentPage - 5 ;
+                end = pb.currentPage + 4 ;
+
+                //如果前边不够5个，后边补齐10个
+                if(begin < 1){
+                    begin = 1;
+                    end = begin + 9;
+                }
+
+                //如果后边不足4个，前边补齐10个
+                if(end > pb.totalPage){
+                    end = pb.totalPage;
+                    begin = end - 9 ;
+                }
+            }
+
+
+            for (var i = begin; i <= end ; i++) {
+                var li;
+
+                if(pb.currentPage == i){
+
+                    li = '<li class="curPage" onclick="javascript:load('+aid+','+i+')"><a href="javascript:void(0)">'+i+'</a></li>';
+
+                }else{
+
+                    li = '<li onclick="javascript:load('+aid+','+i+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                }
+
+                lis += li;
+            }
+
+
+
+
+            var lastPage = '<li onclick="javascript:load('+aid+','+pb.totalPage+')" class="threeword"><a href="javascript:void(0)">末页</a></li>';
+
+            var afterNum =  pb.currentPage + 1;
+            if(afterNum >= pb.totalPage){
+                afterNum =pb.totalPage;
+            }
+
+            var nextPage = '<li onclick="javascript:load('+aid+','+afterNum+')" class="threeword"><a href="javascript:void(0)">下一页</a></li>';
+
+            lis += nextPage;
+            lis += lastPage;
+
+
+            $("#pageNum").html(lis);
+
+            var discuss_lis = "";
+
+            for (var i = 0; i < pb.list.length; i++) {
+
+                var discuss = pb.list[i];
+                var j;
+                var li = '<li>\n' +
+                    '        <div class="comment" id="J_Comment6337232328259750900">\n' +
+                    '\n' +
+                    '            <div class="comment-block" id="J_CommentBlock6337232328259750900">\n' +
+                    '                <p class="comment-user"> <span class="comment-username J_User" data-userid="15850091"> '+discuss.uname+' </span> <span class="comment-time">'+discuss.createDate+'</span> </p>\n' +
+                    '                <div class="comment-content J_CommentContent">\n' +
+                    '                    '+discuss.content+'' +
+                    '                </div>\n';
+                    if(discuss.replyList.length!=0){
+                        li+='                <div class="reply J_ReplyBlock">\n' +
+                            '                    <div class="J_ReplyLatest">\n' +
+                            '                        <div class="reply-title" >\n' +
+                            '                            <span class="reply-title-text" onclick="moreDiscuss(this)">更多回复</span>\n' +
+                            '                            <span class="reply-title-mark"></span>\n' +
+                            '                            <div class="reply-title-line">\n' +
+                            '                                <span></span>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '\n' +
+                            '                        <div class="J_ReplyLatestBlock hidden">';
+
+
+                        for (j=0;j<discuss.replyList.length;j++){
+                            var reply = discuss.replyList[j];
+                            li+= '                       <div class="reply-block">\n' +
+                                '                                <p class="reply-content"> <span class="reply-user"> '+reply.uname+' :&nbsp;</span> '+reply.content+' </p>\n' +
+                                '                                <div class="reply-operate" data-id="6337676401185313214" data-targetid="2234842266">\n' +
+                                '                                    <span class="J_Vote reply-operate-item reply-up">赞<i></i></span>\n' +
+                                '                                    <i class="reply-dot">&middot;</i>\n' +
+                                '                                    <!--<span class="J_Reply reply-operate-item" id="J_Reply6337676401185313214" data-nick="人生如茶" data-userid="100254186">回复</span>-->\n' +
+                                '                                    <!--<i class="reply-dot">&middot;</i>-->\n' +
+                                '                                    <span>'+reply.createDate+'</span>\n'+
+                                '                                    <i class="reply-dot reply-operate-report-dot">&middot;</i>\n' +
+                                '                                    <!--<span class="reply-operate-item reply-operate-report J_ReplyReport" id="J_ReplyReport6337676401185313214" data-userid="100254186" data-targetid="2234842266" data-id="6337676401185313214">举报</span>-->\n' +
+                                '                                </div>\n' +
+                                '                            </div>';
+                        }
+
+                        li+='                        </div>\n'+
+                            '                    </div>\n' ;
+                    }
+
+
+
+
+
+
+
+                    li+=
+                    '                </div>\n' +
+                    '                <div class="comment-operate J_CommentOperate clearfix" data-targetid="2234842266" data-id="6337232328259750900">\n' +
+                    '                    <span class="J_Vote comment-operate-item comment-operate-up">赞<i>16</i></span>\n' +
+                    '                    <span class="J_Reply comment-operate-item comment-operate-reply J_ReplyVisited" onclick="replay_show(this);" id="J_Reply6337232328259750900">回复</span>\n' +
+                    '                </div>\n' +
+                    '\n' +
+                    '                <div class="reply-box J_ReplyBox hidden" id="J_ReplyBox6337232328259750900">\n' +
+                    '                    <div class="reply-box-block">\n' +
+                    '                        <textarea class="reply-box-textarea J_ReplyTextArea"></textarea>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="reply-box-btn J_ReplyBtn" cmt_id="123" id="J_ReplyBtn" onclick="cmt_reply(this);" data-targetid="2234842266" data-id="6337232328259750900" data-nick="" data-userid="">\n' +
+                    '                        回复\n' +
+                    '                    </div>\n' +
+                    '                </div>\n' +
+                    '\n' +
+                    '            </div>\n' +
+                    '            <!--<div class="J_Report comment-report" id="J_Report6337232328259750900" data-userid="15850091" data-targetid="2234842266" data-id="6337232328259750900">-->\n' +
+                    '            <!--举报-->\n' +
+                    '            <!--</div>-->\n' +
+                    '        </div>\n' +
+                    '        </li>';
+
+
+                discuss_lis += li;
+            }
+            $("#discuss").html(discuss_lis);
+
+            if(currentPage==null){
+                window.scrollTo(0,0);
+            } else{
+                window.scrollTo(0,2000);
+            }
+        });
+
+    }
+
+
+</script>
+<script>
+    function publish_cmt() {
+        cmt_text = $('#J_Textarea').val();
+        alert(cmt_text);
+        jQuery.ajax({
+            url:'/getConmts',
+            type:'post',
+            data:{},
+            success:function (args) {
+                console.log(args);
+                jQuery(ths).parent().next().children('.loading-ico-top').css('display', 'none');
+                jQuery(ths).parent().next().children('.conment-list').css('display', 'block');
+            }
+        })
+
+    }
+    function replay_show(ths) {
+        if ($(ths).parent().next().hasClass('hidden')){
+            $(ths).parent().next().removeClass('hidden');
+            $(ths).text('收起');
+            $(ths).addClass('operate-visited')
+
+        }else{
+            $(ths).parent().next().addClass('hidden');
+            $(ths).text('回复');
+            $(ths).removeClass('operate-visited')
+        }
+
+    }
+
+    function moreDiscuss(ths) {
+        if ($(ths).parent().next().hasClass('hidden')){
+            $(ths).parent().next().removeClass('hidden');
+            $(ths).text('收起');
+            $(ths).addClass('operate-visited')
+
+        }else{
+            $(ths).parent().next().addClass('hidden');
+            $(ths).text('更多回复');
+            $(ths).removeClass('operate-visited')
+        }
+
+    }
+
+    function cmt_reply(ths) {
+        alert($(ths).attr('cmt_id'));
+        console.log($(ths).prev().children('.reply-box-textarea').val())
+
+    }
+</script>
+
+</body>
+</html>

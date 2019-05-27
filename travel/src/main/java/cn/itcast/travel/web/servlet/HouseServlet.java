@@ -65,7 +65,7 @@ public class HouseServlet extends BaseServlet {
         if(pageSizeStr != null && pageSizeStr.length() > 0){
             pageSize = Integer.parseInt(pageSizeStr);
         }else{
-            pageSize = 5;
+            pageSize = 10;
         }
 
 
@@ -94,11 +94,11 @@ public class HouseServlet extends BaseServlet {
             currentPage = 1;
         }
 
-        int pageSize = 0;//每页显示条数，如果不传递，默认每页显示5条记录
+        int pageSize = 0;
         if(pageSizeStr != null && pageSizeStr.length() > 0){
             pageSize = Integer.parseInt(pageSizeStr);
         }else{
-            pageSize = 16;
+            pageSize = 5;
         }
 
         List<Favorite> favorites = favoriteService.myFavorite(uid);

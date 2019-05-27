@@ -14,4 +14,10 @@ public interface ArticleDao {
 
     int findArticleCount(int aid , String title,String story);
 
+    Article findOne(int aid);
+
+    List<Article> hotArticle();
+
+
+
 }

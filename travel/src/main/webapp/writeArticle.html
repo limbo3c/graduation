@@ -12,19 +12,57 @@
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/getParameter.js"></script>
-    <style></style>
+    <style>
+        #title{
+            margin-top: 10px;
+            font-size: 20px;
+            width: 256px;
+            height: 32px;
+            line-height: 32px;
+            box-sizing: border-box;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border:1px solid #a6a6a6;
+
+        }
+
+        #title::-webkit-input-placeholder,#story::-webkit-input-placeholder{
+            font-size: 18px;
+        }
+
+        #story{
+            margin-top: 15px;
+            font-size: 20px;
+            line-height: 32px;
+            box-sizing: border-box;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border:1px solid #a6a6a6;
+        }
+
+        #submit{
+            width: 60px;
+            height: 35px;
+            background-color: #aaa9c0;
+            border-radius: 4px;
+            border: 1px solid steelblue;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 <div id="header"></div>
 <div id="article_block" style="text-align: center">
 <form action="article/editArticle" method="post">
     <div>
-        <input id="title" name="title" placeholder="请输入文章标题" style="font-size: 20px"></div>
+       <input id="title" name="title" placeholder="标题" >
+    </div>
     <div>
-        <textarea id="article" name="article" cols=150 rows=25 wrap=virtual placeholder="请输入正文" style="font-size: 20px"></textarea>
+        <textarea id="story" name="story" cols=120 rows=20 wrap=virtual style="font-size: 20px" placeholder="正文"></textarea>
     </div>
 
-    <input type="submit">
+    <input id="submit" type="submit">
 </form>
 </div>
 <div id="footer"></div>

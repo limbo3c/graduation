@@ -67,7 +67,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public int findArticleCount(int aid , String title,String story){
-        String sql = " select * from tab_article where 1 = 1 ";
+        String sql = " select count(*) from tab_article where 1 = 1 ";
 
         StringBuilder sb = new StringBuilder(sql);
 
@@ -90,11 +90,21 @@ public class ArticleDaoImpl implements ArticleDao {
 
             params.add("%"+story+"%");
         }
-        sb.append(" limit ? , ? ");
 
         sql = sb.toString();
 
-
         return template.queryForObject(sql,Integer.class,params.toArray());
+    }
+
+    @Override
+    public Article findOne(int aid){
+        String sql = "select * from tab_article where aid = ?";
+        return template.queryForObject(sql,new BeanPropertyRowMapper<Article>(Article.class),aid);
+    }
+
+    @Override
+    public List<Article> hotArticle(){
+        String sql = "select * from tab_article order by fabulous desc limit 5";
+        return template.query(sql,new BeanPropertyRowMapper<Article>(Article.class));
     }
 }

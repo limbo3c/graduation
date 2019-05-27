@@ -4,24 +4,31 @@ import java.io.Serializable;
 
 public class Reply implements Serializable {
     private int rid;
-    private int uid;
+    private String uname;
     private int aid;
     private String forWho;
     private String content;
-    private int forDiscuss;
+
     private String createDate;
     public Reply(){
 
     }
 
-    public Reply(int rid, int uid, int aid, String forWho, String content, int forDiscuss, String createDate) {
+    public Reply(int rid, String uname, int aid, String forWho, String content, String createDate) {
         this.rid = rid;
-        this.uid = uid;
+        this.uname = uname;
         this.aid = aid;
         this.forWho = forWho;
         this.content = content;
-        this.forDiscuss = forDiscuss;
         this.createDate = createDate;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
     public int getRid() {
@@ -30,14 +37,6 @@ public class Reply implements Serializable {
 
     public void setRid(int rid) {
         this.rid = rid;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
     }
 
     public int getAid() {
@@ -62,14 +61,6 @@ public class Reply implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getForDiscuss() {
-        return forDiscuss;
-    }
-
-    public void setForDiscuss(int forDiscuss) {
-        this.forDiscuss = forDiscuss;
     }
 
     public String getCreateDate() {

@@ -1,6 +1,7 @@
 package cn.itcast.travel.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Discuss implements Serializable {
     private int did;
@@ -8,19 +9,42 @@ public class Discuss implements Serializable {
     private int aid;
     private String content;
     private String createDate;
-    private String forWho;
+    private String uname;
+
+    private List<Reply> replyList;
 
     public Discuss(){
 
     }
 
-    public Discuss(int did, int uid, int aid, String content, String createDate, String forWho) {
+    public Discuss(int did, int uid, int aid, String content, String createDate, String uname) {
         this.did = did;
         this.uid = uid;
         this.aid = aid;
         this.content = content;
         this.createDate = createDate;
-        this.forWho = forWho;
+        this.uname = uname;
+    }
+
+    @Override
+    public String toString() {
+        return "Discuss{" +
+                "did=" + did +
+                ", uid=" + uid +
+                ", aid=" + aid +
+                ", content='" + content + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", uname='" + uname + '\'' +
+                ", replyList=" + replyList +
+                '}';
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
     public int getDid() {
@@ -63,11 +87,11 @@ public class Discuss implements Serializable {
         this.createDate = createDate;
     }
 
-    public String getForWho() {
-        return forWho;
+    public List<Reply> getReplyList() {
+        return replyList;
     }
 
-    public void setForWho(String forWho) {
-        this.forWho = forWho;
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
     }
 }
