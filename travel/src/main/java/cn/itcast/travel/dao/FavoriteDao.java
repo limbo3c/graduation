@@ -15,7 +15,7 @@ public interface FavoriteDao {
     int findCountByHid(int hid);
 
     //添加收藏
-    void add(int i, int uid);
+    void add(int hid, int uid);
 
     //查用户收藏
     List<Favorite> findByUid(int uid);

@@ -18,6 +18,8 @@ public interface ArticleDao {
 
     List<Article> hotArticle();
 
+    void increaseFabulous(int aid);
 
+    void decreaseFabulous(int aid);
 
 }

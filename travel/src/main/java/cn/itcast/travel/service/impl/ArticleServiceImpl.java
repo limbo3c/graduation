@@ -67,4 +67,14 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.findOne(aid);
 
     }
+
+    @Override
+    public void increaseFabulous(int aid){
+        articleDao.increaseFabulous(aid);
+    }
+
+    @Override
+    public void decreaseFabulous(int aid){
+        articleDao.decreaseFabulous(aid);
+    }
 }

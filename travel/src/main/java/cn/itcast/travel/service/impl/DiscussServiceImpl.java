@@ -7,6 +7,7 @@ import cn.itcast.travel.dao.impl.ReplyDaoImpl;
 import cn.itcast.travel.domain.Discuss;
 import cn.itcast.travel.domain.House;
 import cn.itcast.travel.domain.PageBean;
+import cn.itcast.travel.domain.Reply;
 import cn.itcast.travel.service.DiscussService;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ public class DiscussServiceImpl implements DiscussService {
     public boolean saveDiscuss(Discuss discuss){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         discuss.setCreateDate(df.format(new Date()));
+        discussDao.save(discuss);
         return true;
     }
 
@@ -53,7 +55,7 @@ public class DiscussServiceImpl implements DiscussService {
 
         for (int i=0;i<list.size();i++){
             Discuss discuss = list.get(i);
-            System.out.println(replyDao.findByForWho(discuss.getDid()));
+
             discuss.setReplyList(replyDao.findByForWho(discuss.getDid()));
             list.set(i,discuss);
         }
@@ -65,6 +67,14 @@ public class DiscussServiceImpl implements DiscussService {
 
 
         return pb;
+    }
+
+    @Override
+    public boolean saveReply(Reply reply){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        reply.setCreateDate(df.format(new Date()));
+        replyDao.save(reply);
+        return true;
     }
 
 }

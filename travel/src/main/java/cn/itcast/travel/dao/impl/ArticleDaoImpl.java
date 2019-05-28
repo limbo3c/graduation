@@ -107,4 +107,18 @@ public class ArticleDaoImpl implements ArticleDao {
         String sql = "select * from tab_article order by fabulous desc limit 5";
         return template.query(sql,new BeanPropertyRowMapper<Article>(Article.class));
     }
+
+    @Override
+    public void increaseFabulous(int aid){
+        String sql = "update tab_article set fabulous = fabulous + 1 where aid = ?";
+
+        template.update(sql,aid);
+    }
+
+    @Override
+    public void decreaseFabulous(int aid){
+        String sql = "update tab_article set fabulous = fabulous - 1 where aid = ?";
+
+        template.update(sql,aid);
+    }
 }

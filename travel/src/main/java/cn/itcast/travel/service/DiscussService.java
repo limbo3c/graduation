@@ -2,6 +2,7 @@ package cn.itcast.travel.service;
 
 import cn.itcast.travel.domain.Discuss;
 import cn.itcast.travel.domain.PageBean;
+import cn.itcast.travel.domain.Reply;
 
 public interface DiscussService {
 
@@ -11,4 +12,6 @@ public interface DiscussService {
 
     PageBean<Discuss> findDiscussByAid(int aid,int currentPage, int pageSize);
 
+
+    boolean saveReply(Reply reply);
 }

@@ -9,11 +9,15 @@ public interface FavoriteService {
 
     //判断是否收藏
 
-    public boolean isFavorite(String hid, int uid);
+    boolean isFavorite(String hid, int uid);
 
     //添加收藏
 
     void add(String hid, int uid);
 
     List<Favorite> myFavorite(int uid);
+
+    boolean isArticleFavorite(String aid,int uid);
+
+    void addArticleFavorite(String aid,int uid);
 }

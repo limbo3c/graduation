@@ -6,7 +6,7 @@ public class Reply implements Serializable {
     private int rid;
     private String uname;
     private int aid;
-    private String forWho;
+    private int forWho;
     private String content;
 
     private String createDate;
@@ -14,7 +14,7 @@ public class Reply implements Serializable {
 
     }
 
-    public Reply(int rid, String uname, int aid, String forWho, String content, String createDate) {
+    public Reply(int rid, String uname, int aid, int forWho, String content, String createDate) {
         this.rid = rid;
         this.uname = uname;
         this.aid = aid;
@@ -47,11 +47,11 @@ public class Reply implements Serializable {
         this.aid = aid;
     }
 
-    public String getForWho() {
+    public int getForWho() {
         return forWho;
     }
 
-    public void setForWho(String forWho) {
+    public void setForWho(int forWho) {
         this.forWho = forWho;
     }
 

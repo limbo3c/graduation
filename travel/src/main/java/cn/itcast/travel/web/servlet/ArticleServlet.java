@@ -1,11 +1,10 @@
 package cn.itcast.travel.web.servlet;
 
-import cn.itcast.travel.domain.Article;
-import cn.itcast.travel.domain.PageBean;
-import cn.itcast.travel.domain.ResultInfo;
-import cn.itcast.travel.domain.User;
+import cn.itcast.travel.domain.*;
 import cn.itcast.travel.service.ArticleService;
+import cn.itcast.travel.service.FavoriteService;
 import cn.itcast.travel.service.impl.ArticleServiceImpl;
+import cn.itcast.travel.service.impl.FavoriteServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +18,8 @@ import java.util.List;
 public class ArticleServlet extends BaseServlet {
 
     private ArticleService articleService = new ArticleServiceImpl();
+
+    private FavoriteService favoriteService = new FavoriteServiceImpl();
 
     public void editArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String story = request.getParameter("story");
@@ -102,6 +103,49 @@ public class ArticleServlet extends BaseServlet {
         int aid = Integer.parseInt(aidStr);
         Article article = articleService.findOneArticle(aid);
         writeValue(article,response);
+    }
+
+    public void isFavorite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String aid = request.getParameter("aid");
+
+        //获取当前登录的用户 user
+        User user = (User) request.getSession().getAttribute("user");
+        int uid;//用户id
+        if(user == null){
+            //用户尚未登录
+            uid = 0;
+        }else{
+            //用户已经登录
+            uid = user.getUid();
+        }
+
+
+        boolean flag = favoriteService.isArticleFavorite(aid,uid);
+
+        //写回客户端
+        writeValue(flag,response);
+    }
+
+    public void addFavorite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String aid = request.getParameter("aid");
+        //当前登录的用户
+        User user = (User) request.getSession().getAttribute("user");
+        int uid;
+        if(user == null){
+            //用户尚未登录
+            return ;
+        }else{
+            //用户已经登录
+            uid = user.getUid();
+        }
+
+        favoriteService.addArticleFavorite(aid,uid);
+    }
+
+    public void dianZan(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String aid = request.getParameter("aid");
+        articleService.increaseFabulous(Integer.parseInt(aid));
     }
 
 }

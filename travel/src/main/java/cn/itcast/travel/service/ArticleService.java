@@ -17,4 +17,8 @@ public interface ArticleService {
 
     Article findOneArticle(int aid);
 
+    void increaseFabulous(int aid);
+
+    void decreaseFabulous(int aid);
+
 }

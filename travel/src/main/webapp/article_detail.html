@@ -48,19 +48,33 @@
             height: 500px;
             margin-left: 100px;
         }
+
+        #zan_count{
+           margin-left: 300px;
+            margin-bottom: 200px;
+        }
+        #zan_count .zan_count_button{
+            float: left;
+            margin-left: 110px;
+        }
+        #zan_count .zan_count_button p{
+            margin-top: 20px;
+            font-size: 23px;
+        }
     </style>
 </head>
 <body>
-
+<button class="btn" onclick="goTop()" style="background-color: #27aecd;color: white;position: fixed;top: 200px; right: 150px;">回到顶端</button>
+<button class="btn" onclick="goDiscuss()" style="background-color: #27aecd;color: white;position: fixed;top: 200px; right: 250px;">评论</button>
 <div id="header"></div>
 
 <div class="wrap">
     <div class="bread_box" id="crumbs">
-        <a href="/">首页</a>
+        <a href="/"></a>
         <span> &gt;</span>
-        <a href="#">国内</a>
+        <a href="#"></a>
         <span> &gt;</span>
-        <a href="#">xxxxx</a>
+        <a href="#"></a>
     </div>
     <div class="prosum_box" style="border-left: 1px solid silver;border-right: 1px solid silver">
 
@@ -72,7 +86,18 @@
         <div id="article_story">
             <pre id="story"> </pre>
         </div>
+        <div id="zan_count">
+            <div class="zan_count_button">
+                <img id="zan" src="images/article_zan.png" onclick="dianZan()">
+                <p id="zan_message" style="margin-left: 42px">赞</p>
+            </div>
+            <div class="zan_count_button">
+                <img id="count" src="images/article_count.png" onclick="addFavorite()">
+                <p id="count_message" style="margin-left: 30px">收藏</p>
 
+            </div>
+
+        </div>
 
     </div>
 
@@ -163,54 +188,59 @@
         });
     });
 
-    //
-    // $(function () {
-    //     // 发送请求，判断用户是否收藏过该线路
-    //     var aid = getParameter("aid");
-    //     $.get("house/isFavorite",{aid:aid},function (flag) {
-    //         if(flag){
-    //             // 用户已经收藏过
-    //             //<a  class="btn already" disabled="disabled">
-    //             //设置收藏按钮的样式
-    //             $("#favorite").addClass("already");
-    //             $("#favorite").attr("disabled","disabled");
-    //
-    //             //删除按钮的点击事件
-    //             $("#favorite").removeAttr("onclick");
-    //         }else{
-    //             // 用户没有收藏
-    //         }
-    //     });
-    //
-    //
-    //
-    // });
-    //
-    // //点击收藏按钮触发的方法
-    // function addFavorite(){
-    //     var aid = getParameter("aid");
-    //     //1判断用户是否登录
-    //     $.get("user/findOne",{},function (user) {
-    //         if(user){
-    //             //用户登录了
-    //             //添加功能
-    //             $.get("house/addFavorite",{aid:aid},function () {
-    //
-    //                 //代码刷新页面
-    //                 location.reload();
-    //             });
-    //
-    //         }else{
-    //             //用户没有登录
-    //             alert("您尚未登录，请登录");
-    //             location.href="http://localhost/travel/login.html";
-    //         }
-    //     })
-    // }
+
+    $(function () {
+        // 发送请求，判断用户是否收藏过该线路
+        var aid = getParameter("aid");
+        $.get("article/isFavorite",{aid:aid},function (flag) {
+            if(flag){
+                // 用户已经收藏过
+                //<a  class="btn already" disabled="disabled">
+                //设置收藏按钮的样式
+                $("#count").addClass("already");
+                $("#count").attr("disabled","disabled");
+
+                //删除按钮的点击事件
+                $("#count").removeAttr("onclick");
+                $("#count_message").html("已收藏");
+            }else{
+                // 用户没有收藏
+            }
+        });
 
 
-</script>
-<script>
+
+    });
+
+    //点击收藏按钮触发的方法
+    function addFavorite(){
+        var aid = getParameter("aid");
+        //1判断用户是否登录
+        $.get("user/findOne",{},function (user) {
+            if(user){
+                //用户登录了
+                //添加功能
+                $.get("article/addFavorite",{aid:aid},function () {
+
+                    //代码刷新页面
+                    location.reload();
+                });
+
+            }else{
+                //用户没有登录
+                alert("您尚未登录，请登录");
+                location.href="http://localhost/travel/login.html";
+            }
+        })
+    }
+
+    function dianZan() {
+        var aid = getParameter("aid");
+        $.get("article/dianZan",{aid:aid},function () {
+            location.reload();
+        });
+
+    }
 
     $(function () {
 
@@ -316,7 +346,7 @@
                     '        <div class="comment" id="J_Comment6337232328259750900">\n' +
                     '\n' +
                     '            <div class="comment-block" id="J_CommentBlock6337232328259750900">\n' +
-                    '                <p class="comment-user"> <span class="comment-username J_User" data-userid="15850091"> '+discuss.uname+' </span> <span class="comment-time">'+discuss.createDate+'</span> </p>\n' +
+                    '                <p id="'+discuss.did+'" class="comment-user"> <span class="comment-username J_User" data-userid="15850091"> '+discuss.uname+' </span> <span class="comment-time">'+discuss.createDate+'</span> </p>\n' +
                     '                <div class="comment-content J_CommentContent">\n' +
                     '                    '+discuss.content+'' +
                     '                </div>\n';
@@ -368,10 +398,10 @@
                     '                </div>\n' +
                     '\n' +
                     '                <div class="reply-box J_ReplyBox hidden" id="J_ReplyBox6337232328259750900">\n' +
-                    '                    <div class="reply-box-block">\n' +
-                    '                        <textarea class="reply-box-textarea J_ReplyTextArea"></textarea>\n' +
+                    '                    <div class="reply-box-block" style="height: 100%">\n' +
+                    '                        <textarea id="J_ReplyTextArea'+discuss.did+'" name="'+reply.rid+'" class="reply-box-textarea J_ReplyTextArea"></textarea>\n' +
                     '                    </div>\n' +
-                    '                    <div class="reply-box-btn J_ReplyBtn" cmt_id="123" id="J_ReplyBtn" onclick="cmt_reply(this);" data-targetid="2234842266" data-id="6337232328259750900" data-nick="" data-userid="">\n' +
+                    '                    <div id="'+discuss.did+'" class="reply-box-btn J_ReplyBtn" cmt_id="123" onclick="cmt_reply(this);" data-targetid="2234842266" data-id="6337232328259750900" data-nick="" data-userid="" style="height: 57px;">\n' +
                     '                        回复\n' +
                     '                    </div>\n' +
                     '                </div>\n' +
@@ -393,28 +423,39 @@
             } else{
                 window.scrollTo(0,2000);
             }
+
+
         });
 
     }
 
+    function goTop() {
+        window.scrollTo(0,0);
+    }
 
-</script>
-<script>
+    function goDiscuss() {
+        window.scrollTo(0,2000);
+    }
+
     function publish_cmt() {
+        var aid = getParameter("aid");
         cmt_text = $('#J_Textarea').val();
-        alert(cmt_text);
         jQuery.ajax({
-            url:'/getConmts',
+            url:'discuss/saveDiscuss',
             type:'post',
-            data:{},
-            success:function (args) {
-                console.log(args);
-                jQuery(ths).parent().next().children('.loading-ico-top').css('display', 'none');
-                jQuery(ths).parent().next().children('.conment-list').css('display', 'block');
+            data:{content:cmt_text,aid:aid},
+            complete:function () {
+                // console.log(args);
+                // jQuery(ths).parent().next().children('.loading-ico-top').css('display', 'none');
+                // jQuery(ths).parent().next().children('.conment-list').css('display', 'block');
+                location.reload();
+
             }
         })
 
     }
+
+
     function replay_show(ths) {
         if ($(ths).parent().next().hasClass('hidden')){
             $(ths).parent().next().removeClass('hidden');
@@ -444,8 +485,22 @@
     }
 
     function cmt_reply(ths) {
-        alert($(ths).attr('cmt_id'));
-        console.log($(ths).prev().children('.reply-box-textarea').val())
+        var aid = getParameter("aid");
+        var forWho = ths.id;
+        var textAreaId = "#J_ReplyTextArea"+forWho;
+
+        reply_text = $(textAreaId).val();
+        alert(reply_text);
+        jQuery.ajax({
+            url:'discuss/saveReply',
+            type:'post',
+            data:{forWho:forWho,content:reply_text,aid:aid},
+            complete:function () {
+
+                location.reload();
+
+            }
+        })
 
     }
 </script>
