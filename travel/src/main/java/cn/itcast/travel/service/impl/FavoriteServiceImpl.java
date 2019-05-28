@@ -46,4 +46,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     public void addArticleFavorite(String aid,int uid){
         articleFavoriteDao.add(Integer.parseInt(aid),uid);
     }
+
+    @Override
+    public List<ArticleFavorite> myArticleFavorite(int uid){
+        List<ArticleFavorite> articleFavorites = articleFavoriteDao.findByUid(uid);
+        return articleFavorites;
+    }
 }

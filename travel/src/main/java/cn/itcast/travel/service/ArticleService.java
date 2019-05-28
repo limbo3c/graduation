@@ -1,6 +1,7 @@
 package cn.itcast.travel.service;
 
 import cn.itcast.travel.domain.Article;
+import cn.itcast.travel.domain.ArticleFavorite;
 import cn.itcast.travel.domain.PageBean;
 
 import java.util.List;
@@ -20,5 +21,9 @@ public interface ArticleService {
     void increaseFabulous(int aid);
 
     void decreaseFabulous(int aid);
+
+    PageBean<Article> myArticle(int author,int currentPage,int pageSize);
+
+    PageBean<Article> myFavoriteArticle(List<ArticleFavorite> articleFavorites,int currentPage,int pageSize);
 
 }

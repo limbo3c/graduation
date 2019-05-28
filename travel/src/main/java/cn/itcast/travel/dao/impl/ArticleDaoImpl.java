@@ -121,4 +121,48 @@ public class ArticleDaoImpl implements ArticleDao {
 
         template.update(sql,aid);
     }
+
+    @Override
+    public List<Article> findByAuthor(int author,int start,int pageSize){
+
+        String sql = " select * from tab_article where 1 = 1 ";
+
+        StringBuilder sb = new StringBuilder(sql);
+
+        List params = new ArrayList();
+
+        if(author != 0){
+            sb.append( " and author = ? ");
+
+            params.add(author);
+        }
+
+        sb.append(" limit ? , ? ");
+
+        sql = sb.toString();
+
+        params.add(start);
+        params.add(pageSize);
+        return template.query(sql,new BeanPropertyRowMapper<Article>(Article.class),params.toArray());
+    }
+
+    @Override
+    public int findCountByAuthor(int author){
+        String sql = " select count(*) from tab_article where 1 = 1 ";
+
+        StringBuilder sb = new StringBuilder(sql);
+
+        List params = new ArrayList();
+
+        if(author != 0){
+            sb.append( " and author = ? ");
+
+            params.add(author);
+        }
+
+
+        sql = sb.toString();
+
+        return template.queryForObject(sql,Integer.class,params.toArray());
+    }
 }

@@ -65,7 +65,7 @@ public class HouseServlet extends BaseServlet {
         if(pageSizeStr != null && pageSizeStr.length() > 0){
             pageSize = Integer.parseInt(pageSizeStr);
         }else{
-            pageSize = 10;
+            pageSize = 5;
         }
 
 
@@ -98,7 +98,7 @@ public class HouseServlet extends BaseServlet {
         if(pageSizeStr != null && pageSizeStr.length() > 0){
             pageSize = Integer.parseInt(pageSizeStr);
         }else{
-            pageSize = 5;
+            pageSize = 16;
         }
 
         List<Favorite> favorites = favoriteService.myFavorite(uid);
@@ -116,7 +116,7 @@ public class HouseServlet extends BaseServlet {
 
 
         String hid = request.getParameter("hid");
-        System.out.println(hid);
+
         House house = houseService.findOne(hid);
 
         writeValue(house,response);

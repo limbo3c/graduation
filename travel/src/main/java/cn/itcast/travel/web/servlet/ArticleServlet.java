@@ -148,4 +148,72 @@ public class ArticleServlet extends BaseServlet {
         articleService.increaseFabulous(Integer.parseInt(aid));
     }
 
+    public void myArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        int uid;
+        if(user == null){
+            //用户尚未登录
+            return ;
+        }else{
+            //用户已经登录
+            uid = user.getUid();
+        }
+        String currentPageStr = request.getParameter("currentPage");
+        String pageSizeStr = request.getParameter("pageSize");
+
+        int currentPage = 0;//当前页码，如果不传递，则默认为第一页
+        if(currentPageStr != null && currentPageStr.length() > 0){
+            currentPage = Integer.parseInt(currentPageStr);
+        }else{
+            currentPage = 1;
+        }
+
+        int pageSize = 0;
+        if(pageSizeStr != null && pageSizeStr.length() > 0){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }else{
+            pageSize = 16;
+        }
+
+        PageBean<Article> pb = articleService.myArticle(uid,currentPage,pageSize);
+
+        //将pageBean对象序列化为json
+        writeValue(pb,response);
+
+    }
+
+    public void myFavoriteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        int uid;
+        if(user == null){
+            //用户尚未登录
+            return ;
+        }else{
+            //用户已经登录
+            uid = user.getUid();
+        }
+        String currentPageStr = request.getParameter("currentPage");
+        String pageSizeStr = request.getParameter("pageSize");
+
+        int currentPage = 0;//当前页码，如果不传递，则默认为第一页
+        if(currentPageStr != null && currentPageStr.length() > 0){
+            currentPage = Integer.parseInt(currentPageStr);
+        }else{
+            currentPage = 1;
+        }
+
+        int pageSize = 0;
+        if(pageSizeStr != null && pageSizeStr.length() > 0){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }else{
+            pageSize = 16;
+        }
+        List<ArticleFavorite> articleFavorites = favoriteService.myArticleFavorite(uid);
+
+        PageBean<Article> pb = articleService.myFavoriteArticle(articleFavorites,currentPage,pageSize);
+
+        //将pageBean对象序列化为json
+        writeValue(pb,response);
+    }
+
 }

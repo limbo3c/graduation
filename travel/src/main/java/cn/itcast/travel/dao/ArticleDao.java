@@ -22,4 +22,8 @@ public interface ArticleDao {
 
     void decreaseFabulous(int aid);
 
+    List<Article> findByAuthor(int author,int start,int pageSize);
+
+    int findCountByAuthor(int author);
+
 }

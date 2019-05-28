@@ -1,4 +1,5 @@
 <!-- 头部 start -->
+
 <script src="js/getParameter.js"></script>
 <script>
     $(function () {
@@ -15,12 +16,88 @@
 
         $.get("user/findOne",{},function (user) {
             if (user){
-                var lis = '<li class="nav-active"><a href="index.html">首页</a></li>\n' +
-                    '            <li><a href="myhouse.html?uid='+user.uid+'">我的房源</a></li>\n' +
-                    '            <li><a href="myorder.html?uid='+user.uid+'">我的订单</a></li>\n' +
-                    '            <li><a href="myfavorite.html?uid='+user.uid+'">我的收藏</a></li>\n' +
-                    '            <li><a href="mystory.html?uid='+user.uid+'">我的故事</a></li>\n' +
-                    '            <li><a href="setup.html?uid='+user.uid+'">设置</a></li>';
+            var lis ='<li class="nav-active"><a href="index.html">首页</a></li>\n' +
+                '            <li><a href="myhouse.html?uid='+user.uid+'">我的房源</a></li>\n' +
+                '            <li><a href="myorder.html?uid='+user.uid+'">我的订单</a></li>\n' +
+                '            <li><a href="myfavorite.html?uid='+user.uid+'">我的收藏</a></li>\n' +
+                '            <li><a href="myarticle.html">我的故事</a></li>\n' +
+                '            <li><a href="setup.html?uid='+user.uid+'">设置</a></li>';
+                // var lis = '<li class="dropdown">\n' +
+                //     '    <a data-toggle="dropdown" class="dropdown-toggle" href="#">房源<strong class="caret"></strong></a>\n' +
+                //     '    <ul class="dropdown-menu" >\n' +
+                //     '        <li>\n' +
+                //     '            <a href="myhouse.html?uid='+user.uid+'">我的房源</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="house_list.html">查找房源</a>\n' +
+                //     '        </li>\n' +
+                //     '        <!--<li class="divider">-->\n' +
+                //     '        <!--</li>-->\n' +
+                //     '        <!--<li>-->\n' +
+                //     '            <!--<a href="#">链接3</a>-->\n' +
+                //     '        <!--</li>-->\n' +
+                //     '    </ul>\n' +
+                //     '</li>\n' +
+                //     '<li class="dropdown">\n' +
+                //     '    <a data-toggle="dropdown" class="dropdown-toggle" href="#">订单<strong class="caret"></strong></a>\n' +
+                //     '    <ul class="dropdown-menu">\n' +
+                //     '        <li>\n' +
+                //     '            <a href="myorder.html?uid='+user.uid+'">我的订单</a>\n' +
+                //     '        </li>\n' +
+                //     '\n' +
+                //     '    </ul>\n' +
+                //     '</li>\n' +
+                //     '<li class="dropdown">\n' +
+                //     '    <a data-toggle="dropdown" class="dropdown-toggle" href="#">故事<strong class="caret"></strong></a>\n' +
+                //     '    <ul class="dropdown-menu">\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">我的故事</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="article_list.html">优秀故事</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">其他</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li class="divider">\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">链接3</a>\n' +
+                //     '        </li>\n' +
+                //     '    </ul>\n' +
+                //     '</li>\n' +
+                //     '<li class="dropdown">\n' +
+                //     '    <a data-toggle="dropdown" class="dropdown-toggle" href="#">收藏与关注<strong class="caret"></strong></a>\n' +
+                //     '    <ul class="dropdown-menu">\n' +
+                //     '        <li>\n' +
+                //     '            <a href="myfavorite.html?uid='+user.uid+'">房源收藏</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">故事收藏</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">关注用户</a>\n' +
+                //     '        </li>\n' +
+                //     '      \n' +
+                //     '    </ul>\n' +
+                //     '</li>\n' +
+                //     '<li class="dropdown">\n' +
+                //     '    <a data-toggle="dropdown" class="dropdown-toggle" href="#">设置<strong class="caret"></strong></a>\n' +
+                //     '    <ul class="dropdown-menu">\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">账户设置</a>\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#"></a>\n' +
+                //     '        </li>\n' +
+                //     '       \n' +
+                //     '        <li class="divider">\n' +
+                //     '        </li>\n' +
+                //     '        <li>\n' +
+                //     '            <a href="#">退出</a>\n' +
+                //     '        </li>\n' +
+                //     '    </ul>\n' +
+                //     '</li>';
                 $("#category").html(lis);
 
 
@@ -101,8 +178,8 @@
         </div>
     </header>
 
-    <div class="navitem">
-        <ul id="category" class="nav">
+    <div class="navitem" >
+        <ul id="category" class="nav" >
 
         </ul>
     </div>

@@ -108,11 +108,6 @@ public class HouseServiceImpl implements HouseService {
         Seller seller = sellerDao.findById(house.getSid());
         house.setSeller(seller);
 
-        //收藏次数
-        int count = favoriteDao.findCountByHid(house.getHid());
-        house.setCount(count);
-
-
         return house;
     }
 

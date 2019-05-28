@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>我收藏的故事</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/getParameter.js"></script>
+    <style>
+        .tab-content .row>div {
+            margin-top: 16px;
+        }
+        .tab-content {
+            margin-bottom: 36px;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            load(null);
+        });
+
+        function load(currentPage){
+
+            $.get("article/myFavoriteArticle",{currentPage:currentPage},function (pb) {
+
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+
+
+                var lis = "";
+
+                var fristPage = '<li onclick="javascipt:load(1)"><a href="javascript:void(0)">首页</a></li>';
+
+                //计算上一页的页码
+                var beforeNum =  pb.currentPage - 1;
+                if(beforeNum <= 0){
+                    beforeNum = 1;
+                }
+
+                var beforePage = '<li  onclick="javascipt:load('+beforeNum+')" class="threeword"><a href="javascript:void(0)">上一页</a></li>';
+
+                lis += fristPage;
+                lis += beforePage;
+                //展示分页
+
+                var begin; // 开始位置
+                var end ; //  结束位置
+
+                if(pb.totalPage < 10){
+
+
+                    begin = 1;
+                    end = pb.totalPage;
+                }else{
+
+
+                    begin = pb.currentPage - 5 ;
+                    end = pb.currentPage + 4 ;
+
+                    //如果前边不够5个，后边补齐10个
+                    if(begin < 1){
+                        begin = 1;
+                        end = begin + 9;
+                    }
+
+                    //如果后边不足4个，前边补齐10个
+                    if(end > pb.totalPage){
+                        end = pb.totalPage;
+                        begin = end - 9 ;
+                    }
+                }
+
+
+                for (var i = begin; i <= end ; i++) {
+                    var li;
+
+                    if(pb.currentPage == i){
+
+                        li = '<li class="curPage" onclick="javascript:load('+i+')"><a href="javascript:void(0)">'+i+'</a></li>';
+
+                    }else{
+
+                        li = '<li onclick="javascript:load('+i+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }
+
+                    lis += li;
+                }
+
+
+                var lastPage = '<li onclick="javascript:load('+pb.totalPage+')" class="threeword"><a href="javascript:void(0)">末页</a></li>';
+
+                var afterNum =  pb.currentPage + 1;
+                if(afterNum >= pb.totalPage){
+                    afterNum =pb.totalPage;
+                }
+
+                var nextPage = '<li onclick="javascript:load('+afterNum+')" class="threeword"><a href="javascript:void(0)">下一页</a></li>';
+
+                lis += nextPage;
+                lis += lastPage;
+
+
+                $("#pageNum").html(lis);
+
+                var article_lis = "";
+
+                for (var i = 0; i < pb.list.length; i++) {
+
+                    var article = pb.list[i];
+
+                    var li = '<li>\n' +
+                        '                                    <div class="col-md-3">\n' +
+                        '                                        <a href="article_detail.html?aid='+article.aid+'">\n' +
+                        '                                            <img src="'+article.aimage+'" alt="" style="width:275px;height: 164px">\n' +
+                        '                                            <div class="has_border">\n' +
+                        '                                                <h3>'+article.title+'</h3>\n' +
+                        '                                                <div class="createDate" style="position: absolute;bottom: 15px"><em></em><strong>'+article.createDate+'</strong><em></em><button  class="btn" style="margin-left:30px;background-color: #21cd96;color: white;">取消收藏</button></div>\n' +
+                        '                                            </div>\n' +
+                        '                                        </a>\n' +
+                        '                                    </div>\n' +
+                        '                                </li>';
+                    article_lis += li;
+                }
+                $("#article").html(article_lis);
+
+
+                window.scrollTo(0,0);
+            });
+
+        }
+
+    </script>
+
+
+
+
+
+</head>
+<body>
+
+<div id="header"></div>
+
+<section id="content">
+    <section class="hemai_jx">
+        <div class="jx_top">
+            <div class="jx_tit">
+                <img src="images/icon_5.jpg" alt="">
+                <span>我的故事</span>
+            </div>
+        </div>
+        <div class="jx_content">
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="row">
+                        <ul id="article">
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page_num_inf">
+            <i></i> 共
+            <span id="totalPage">12</span>页<span id="totalCount">132</span>条
+        </div>
+        <div class="pageNum">
+            <ul>
+
+            </ul>
+        </div>
+    </section>
+</section>
+
+<div id="footer"></div>
+
+<script type="text/javascript" src="js/include.js"></script>
+</body>
+</html>

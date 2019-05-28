@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Date;
+import java.util.List;
 
 public class ArticleFavoriteDaoImpl implements ArticleFavoriteDao {
 
@@ -30,5 +31,12 @@ public class ArticleFavoriteDaoImpl implements ArticleFavoriteDao {
         String sql = "insert into tab_article_favorite values(?,?,?)";
 
         template.update(sql,aid,new Date(),uid);
+    }
+
+    @Override
+    public List<ArticleFavorite> findByUid(int uid){
+
+        String sql = "select * from tab_article_favorite where uid = ?";
+        return template.query(sql,new BeanPropertyRowMapper<ArticleFavorite>(ArticleFavorite.class),uid);
     }
 }

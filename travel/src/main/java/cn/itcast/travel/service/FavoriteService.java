@@ -1,5 +1,7 @@
 package cn.itcast.travel.service;
 
+import cn.itcast.travel.domain.Article;
+import cn.itcast.travel.domain.ArticleFavorite;
 import cn.itcast.travel.domain.Favorite;
 import cn.itcast.travel.domain.PageBean;
 
@@ -20,4 +22,6 @@ public interface FavoriteService {
     boolean isArticleFavorite(String aid,int uid);
 
     void addArticleFavorite(String aid,int uid);
+
+    List<ArticleFavorite> myArticleFavorite(int uid);
 }
