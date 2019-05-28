@@ -1,5 +1,6 @@
 package cn.itcast.travel.web.servlet;
 
+import cn.itcast.travel.domain.PageBean;
 import cn.itcast.travel.domain.ResultInfo;
 import cn.itcast.travel.domain.Seller;
 import cn.itcast.travel.domain.User;
@@ -72,6 +73,60 @@ public class SellerServlet extends BaseServlet {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(json);
 
+    }
+
+
+    public void beSeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sidStr = request.getParameter("sid");
+        int sid = Integer.parseInt(sidStr);
+        boolean flag = sellerService.beSeller(sid);
+        writeValue(flag,response);
+    }
+
+    public void notBeSeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sidStr = request.getParameter("sid");
+        int sid = Integer.parseInt(sidStr);
+        boolean flag = sellerService.notBeSeller(sid);
+        writeValue(flag,response);
+    }
+
+    public void wantBeSeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String currentPageStr = request.getParameter("currentPage");
+        String pageSizeStr = request.getParameter("pageSize");
+
+        int currentPage = 0;//当前页码，如果不传递，则默认为第一页
+        if(currentPageStr != null && currentPageStr.length() > 0){
+            currentPage = Integer.parseInt(currentPageStr);
+        }else{
+            currentPage = 1;
+        }
+
+        int pageSize = 0;//每页显示条数，如果不传递，默认每页显示5条记录
+        if(pageSizeStr != null && pageSizeStr.length() > 0){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }else{
+            pageSize = 10;
+        }
+
+        PageBean<Seller> pb = sellerService.wantBeSellerList(currentPage,pageSize);
+
+        //将pageBean对象序列化为json
+        writeValue(pb,response);
+    }
+
+    public void canNotBeSeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sidStr = request.getParameter("sid");
+        int sid = Integer.parseInt(sidStr);
+        boolean flag = sellerService.deleteSeller(sid);
+        ResultInfo resultInfo = new ResultInfo();
+        if(flag){
+            resultInfo.setFlag(true);
+        }else {
+            resultInfo.setFlag(false);
+            resultInfo.setErrorMsg("没能成功驳回请求！");
+        }
+        writeValue(resultInfo,response);
     }
 
 

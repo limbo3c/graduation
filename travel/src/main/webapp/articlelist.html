@@ -132,7 +132,7 @@
                         '                        <div class="price">\n' +
                         '                            <p class="price_num">\n' +
                         '                            </p>\n' +
-                        '                            <p><a href="article_detail.html?aid='+article.aid+'">查看详情</a></p>\n' +
+                        '                            <p><a href='+article.aid+'"articledetail.html?aid=">查看详情</a></p>\n' +
                         '                        </div>\n' +
                         '                    </li>';
                     article_lis += li;
@@ -160,7 +160,7 @@
                     var article = pb[i];
 
                     var li = '<li>\n' +
-                        '                        <a href="article_detail.html?aid='+article.aid+'">\n' +
+                        '                        <a href='+article.aid+'"articledetail.html?aid=">\n' +
                         '                        <div class="left"><img src="'+article.aimage+'" alt=""></div>\n' +
                         '                        <div class="right">\n' +
                         '                            <p>'+article.title+'</p>\n' +

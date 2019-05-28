@@ -12,21 +12,32 @@ public class Seller implements Serializable {
     private String consphone;//卖家电话
     private String address;//卖家地址
     private String identity;
+    private String isSeller;
+    private String createDate;
+    private String updateDate;
 
     public Seller(){}
 
 
-
-    public Seller(int sid, int uid, String sname, String consphone, String address, String identity) {
-
+    public Seller(int sid, int uid, String sname, String consphone, String address, String identity, String isSeller, String createDate, String updateDate) {
         this.sid = sid;
         this.uid = uid;
         this.sname = sname;
         this.consphone = consphone;
         this.address = address;
         this.identity = identity;
+        this.isSeller = isSeller;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
+    public String getIsSeller() {
+        return isSeller;
+    }
+
+    public void setIsSeller(String isSeller) {
+        this.isSeller = isSeller;
+    }
 
     public int getUid() {
         return uid;
@@ -75,5 +86,34 @@ public class Seller implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Seller{" +
+                "sid=" + sid +
+                ", uid=" + uid +
+                ", sname='" + sname + '\'' +
+                ", consphone='" + consphone + '\'' +
+                ", address='" + address + '\'' +
+                ", identity='" + identity + '\'' +
+                ", isSeller='" + isSeller + '\'' +
+                '}';
     }
 }
