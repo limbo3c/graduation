@@ -33,4 +33,6 @@ public interface UserDao {
     void seal(int uid);
 
     void unseal(int uid);
+
+    void updateUser(User user);
 }

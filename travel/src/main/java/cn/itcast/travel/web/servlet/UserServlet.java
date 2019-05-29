@@ -137,9 +137,6 @@ public class UserServlet extends BaseServlet {
         Object user = request.getSession().getAttribute("user");
         //将user写回客户端
 
-        ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(),user);
         writeValue(user,response);
     }
 
@@ -236,6 +233,37 @@ public class UserServlet extends BaseServlet {
 
             info.setFlag(false);
             info.setErrorMsg("解封失败!");
+        }
+
+        writeValue(info,response);
+    }
+
+
+    public void updateInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        Map<String, String[]> map = request.getParameterMap();
+        User user = (User) request.getSession().getAttribute("user");
+        System.out.println(user.toString());
+        try {
+            BeanUtils.populate(user,map);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        System.out.println("/////////////");
+        System.out.println(user.toString());
+
+        boolean flag = service.updateUser(user);
+        ResultInfo info = new ResultInfo();
+        //响应结果
+        if(flag){
+
+            info.setFlag(true);
+        }else{
+
+            info.setFlag(false);
+            info.setErrorMsg("修改失败!");
         }
 
         writeValue(info,response);

@@ -108,4 +108,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean updateUser(User user){
+        if(user!=null){
+            userDao.updateUser(user);
+            return true;
+        }
+        return false;
+
+    }
+
 }

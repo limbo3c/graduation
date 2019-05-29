@@ -146,4 +146,18 @@ public class UserDaoImpl implements UserDao {
         template.update(sql,uid);
     }
 
+    @Override
+    public void updateUser(User user){
+        String sql = "update tab_user set username = ? , password = ?, name = ? , birthday = ? , sex = ? , telephone = ? , email = ? where uid = ?";
+        template.update(sql,user.getUsername(),
+                user.getPassword(),
+                user.getName(),
+                user.getBirthday(),
+                user.getSex(),
+                user.getTelephone(),
+                user.getEmail(),
+                user.getUid()
+                );
+    }
+
 }

@@ -16,4 +16,6 @@ public interface UserService {
     boolean seal(int uid);
 
     boolean unseal(int uid);
+
+    boolean updateUser(User user);
 }
