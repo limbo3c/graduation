@@ -130,7 +130,6 @@ public class HouseServiceImpl implements HouseService {
         house.setScore(0);
         house.setHflag("1");
         house.setCount(0);
-        house.setSid(1);
         house.setHdate(df.format(new Date()));
 
         houseDao.save(house);

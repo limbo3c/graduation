@@ -149,7 +149,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public int findHouseCount(int hid,String uname){
+    public int findCommentCount(int hid,String uname){
         String sql = "select count(*) from tab_comment where 1=1 ";
         StringBuilder sb = new StringBuilder(sql);
 

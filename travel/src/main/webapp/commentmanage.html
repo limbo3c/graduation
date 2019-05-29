@@ -31,7 +31,7 @@
             load(hid,null,uname);
         });
 
-        function deleteHouse(cmid) {
+        function deleteComment(cmid) {
             $.get("comment/deleteComment",{cmid:cmid},function (data) {
 
                 if(data.flag){
@@ -141,7 +141,7 @@
                         '                                    <td>'+comment.uname+'</td>\n' +
                         '                                    <td>'+comment.content+'</td>\n' +
                         '                                    <td>'+comment.createTime+'</td>\n' +
-                        '                                    <td><a class="btn" onclick="javascript:deleteHouse('+comment.cmid+')" style="background-color: #b4bfcd ;margin-right: 20px">删除</a></td>\n' +
+                        '                                    <td><a class="btn" onclick="javascript:deleteComment('+comment.cmid+')" style="background-color: #b4bfcd ;margin-right: 20px">删除</a></td>\n' +
                         '                                </tr>';
                     comment_lis += li;
                 }
@@ -151,6 +151,14 @@
                 window.scrollTo(0,0);
             });
 
+        }
+        function searchResult() {
+            var hid = $("#hid_input").val();
+
+            var uname = $("#uname_input").val();
+
+            // currentPage = null;
+            location.href="http://localhost/travel/commentmanage.html?hid="+hid+"&uname="+uname;
         }
 
 
@@ -177,6 +185,7 @@
                         <dd><a href="housemanage.html">房源管理</a></dd>
                         <dd><a href="ordermanage.html?oid=null">订单管理</a></dd>
                         <dd><a href="commentmanage.html">评论管理</a></dd>
+                        <dd><a href="articlemanage.html">文章管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -198,6 +207,13 @@
                         <div class="container-fluid">
                             <div class="row-fluid">
                                 <div class="span12">
+                                    <div style="margin-top: 15px;margin-bottom: 20px">
+                                        <b>房屋号：</b>
+                                        <input id="hid_input" style="border: 1px solid silver;border-radius: 6px;height: 30px;margin-right: 10px" class="input-medium search-query" type="text" />
+                                        <b>用户：</b>
+                                        <input id="uname_input" style="border: 1px solid silver;border-radius: 6px;height: 30px;" class="input-medium search-query" type="text" />
+                                        <button id="search_button" onclick="searchResult()" class="btn" style="margin-left: 20px">查找</button>
+                                    </div>
                                     <table class="table table-hover table-striped" style="border: 3px solid #07428b;">
                                         <thead>
                                         <tr>

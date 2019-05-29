@@ -14,13 +14,15 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public void save(Article article){
-        String sql = "insert into tab_article(author,title,story,createDate,fabulous) values(?,?,?,?,?)";
+        String sql = "insert into tab_article(author,title,story,createDate,fabulous,authorName,updateDate) values(?,?,?,?,?,?,?)";
 
         template.update(sql,article.getAuthor(),
                 article.getTitle(),
                 article.getStory(),
                 article.getCreateDate(),
-                article.getFabulous()
+                article.getFabulous(),
+                article.getAuthorName(),
+                article.getUpdateDate()
         );
     }
 
@@ -165,4 +167,70 @@ public class ArticleDaoImpl implements ArticleDao {
 
         return template.queryForObject(sql,Integer.class,params.toArray());
     }
+
+    @Override
+    public List<Article> findByAuthorNameAndTitle(String authorName,String title,int start,int pageSize){
+
+        String sql = " select * from tab_article where 1 = 1 ";
+
+        StringBuilder sb = new StringBuilder(sql);
+
+        List params = new ArrayList();
+        if(authorName != null && authorName.length() > 0){
+            sb.append(" and authorName like ? ");
+
+            params.add("%"+authorName+"%");
+        }
+
+        if(title != null && title.length() > 0){
+            sb.append(" and title like ? ");
+
+            params.add("%"+title+"%");
+        }
+
+
+        sb.append(" limit ? , ? ");
+
+        sql = sb.toString();
+
+        params.add(start);
+        params.add(pageSize);
+        return template.query(sql,new BeanPropertyRowMapper<Article>(Article.class),params.toArray());
+    }
+
+    @Override
+    public int findCountByAuthorNameAndTitle(String authorName,String title){
+        String sql = " select count(*) from tab_article where 1 = 1 ";
+
+        StringBuilder sb = new StringBuilder(sql);
+
+        List params = new ArrayList();
+
+        if(authorName != null && authorName.length() > 0){
+            sb.append(" and authorName like ? ");
+
+            params.add("%"+authorName+"%");
+        }
+
+        if(title != null && title.length() > 0){
+            sb.append(" and title like ? ");
+
+            params.add("%"+title+"%");
+        }
+        sql = sb.toString();
+
+        return template.queryForObject(sql,Integer.class,params.toArray());
+    }
+
+   @Override
+    public void update(Article article){
+        String sql = "update tab_article set title = ? , story = ? , aimage = ? ,updateDate = ? , fabulous = ? where aid = ?";
+
+        template.update(sql,article.getTitle(),
+                article.getStory(),
+                article.getAimage(),
+                article.getUpdateDate(),
+                article.getFabulous(),
+                article.getAid());
+   }
 }

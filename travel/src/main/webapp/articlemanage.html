@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>订单管理</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/house_upload.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/myorder.css">
+
+    <script src="js/getParameter.js"></script>
+
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/layui.css" media="all">
+    <style>
+        body{margin: 10px;}
+    </style>
+
+
+    <script>
+
+        $(function () {
+            var authorName = getParameter("authorName");
+            var title = getParameter("title");
+            if(title){
+
+                title = window.decodeURIComponent(title);
+            }
+            //当页码加载完成后，调用load方法，发送ajax请求加载数据
+            load(authorName,null,title);
+        });
+
+        function deleteArticle(aid) {
+            $.get("article/deleteArticle",{aid:aid},function (data) {
+
+                if(data.flag){
+                    location.reload();
+                }else{
+                    $("#errorMsg").html(data.errorMsg);
+
+                }
+
+            });
+
+        }
+
+        function load(authorName,currentPage,title){
+
+            $.get("article/articleManageQuery",{authorName:authorName,currentPage:currentPage,title:title},function (pb) {
+
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+
+
+                var lis = "";
+
+                var fristPage = '<li onclick="javascipt:load('+authorName+',1,'+title+')"><a href="javascript:void(0)">首页</a></li>';
+
+                //计算上一页的页码
+                var beforeNum =  pb.currentPage - 1;
+                if(beforeNum <= 0){
+                    beforeNum = 1;
+                }
+
+                var beforePage = '<li  onclick="javascipt:load('+authorName+','+beforeNum+','+title+')" class="threeword"><a href="javascript:void(0)">上一页</a></li>';
+
+                lis += fristPage;
+                lis += beforePage;
+                //展示分页
+
+                var begin; // 开始位置
+                var end ; //  结束位置
+
+                if(pb.totalPage < 10){
+
+
+                    begin = 1;
+                    end = pb.totalPage;
+                }else{
+
+
+                    begin = pb.currentPage - 5 ;
+                    end = pb.currentPage + 4 ;
+
+                    //如果前边不够5个，后边补齐10个
+                    if(begin < 1){
+                        begin = 1;
+                        end = begin + 9;
+                    }
+
+                    //如果后边不足4个，前边补齐10个
+                    if(end > pb.totalPage){
+                        end = pb.totalPage;
+                        begin = end - 9 ;
+                    }
+                }
+
+
+                for (var i = begin; i <= end ; i++) {
+                    var li;
+
+                    if(pb.currentPage == i){
+
+                        li = '<li class="curPage" onclick="javascript:load('+authorName+','+i+','+title+')"><a href="javascript:void(0)">'+i+'</a></li>';
+
+                    }else{
+
+                        li = '<li onclick="javascript:load('+authorName+','+i+','+title+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }
+
+                    lis += li;
+                }
+
+
+
+                var lastPage = '<li onclick="javascript:load('+authorName+','+pb.totalPage+','+title+')" class="threeword"><a href="javascript:void(0)">末页</a></li>';
+
+                var afterNum =  pb.currentPage + 1;
+                if(afterNum >= pb.totalPage){
+                    afterNum =pb.totalPage;
+                }
+
+                var nextPage = '<li onclick="javascript:load('+authorName+','+afterNum+','+title+')" class="threeword"><a href="javascript:void(0)">下一页</a></li>';
+
+                lis += nextPage;
+                lis += lastPage;
+
+
+                $("#pageNum").html(lis);
+
+                var article_lis = "";
+
+                for (var i = 0; i < pb.list.length; i++) {
+
+                    var article = pb.list[i];
+
+                    var li = ' <tr>\n' +
+                        '                                    <td>'+article.aid+'</td>\n' +
+                        '                                    <td>'+article.authorName+'</td>\n' +
+                        '                                    <td>'+article.title+'</td>\n' +
+                        '                                    <td><div style="width: 500px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;overflow: hidden;">'+article.story+'</div></td>\n' +
+                        '                                    <td>'+article.createDate+'</td>\n' +
+                        '                                    <td>'+article.fabulous+'</td>\n' +
+                        '                                    <td><a class="btn" href="articledetail.html?aid='+article.aid+'" style="background-color: #b4bfcd ;margin-right: 20px;">查看</a></td>\n' +
+                        '                                    <td><button id="'+article.aid+'" class="btn" onclick="javascript:editInfo(this)" data-toggle="modal" data-target="#myModal" style="background-color: #b4bfcd ;margin-right: 20px">编辑</button></td>\n' +
+                        '                                    <td><a class="btn" onclick="javascript:deleteArticle('+article.aid+')" style="background-color: #b4bfcd ;margin-right: 20px;">删除</a></td>\n' +
+                        '                                </tr>';
+                    article_lis += li;
+                }
+
+                $("#article").html(article_lis);
+
+                window.scrollTo(0,0);
+            });
+
+        }
+
+
+        function editInfo(ths) {
+            var ele = $(ths).parent().prev().prev();
+            var fabulous = document.getElementById("fabulous");
+            fabulous.value=ele.text();
+            ele = $(ele).prev().prev().prev().prev().prev();
+            var aid = document.getElementById("aid");
+            aid.value=ele.text();
+
+
+        }
+
+
+        $(function () {
+            $("#registerForm").submit(function(){
+                $.post("article/updateFabulous",$(this).serialize(),function(data){
+
+                    if(data.flag){
+                        location.reload();
+                    }else{
+                        $("#errorMsg").html(data.errorMsg);
+
+                    }
+                });
+
+                return false;
+            });
+        });
+
+        function searchResult() {
+            var authorName = $("#author_input").val();
+
+            var title = $("#title_input").val();
+
+            location.href="http://localhost/travel/articlemanage.html?authorName="+authorName+"&title="+title;
+        }
+
+
+
+
+    </script>
+
+</head>
+<body>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title" id="myModalLabel">编辑文章</h4>
+            </div>
+            <div class="modal-body">
+                <div class="rg_form clearfix" >
+                    <div class="rg_form_center" >
+                        <form id="registerForm" >
+                            <table style="margin-left: 65px" >
+                                <tr>
+                                    <td class="td_left">
+                                        <label for="aid"></label>
+                                    </td>
+                                    <td class="td_right">
+                                        <input type="hidden" id="aid" name="aid" value="" >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td_left">
+                                        <label for="fabulous">赞</label>
+                                    </td>
+                                    <td class="td_right">
+                                        <input type="text" id="fabulous" name="fabulous" value="" onkeyup="value=value.replace(/[^\d]/g,'') "
+                                               onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))">
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td class="td_left">
+                                    </td>
+                                    <td class="td_right gender">
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <input  type="submit" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+
+
+
+<div>
+
+    <ul class="layui-nav layui-bg-cyan" >
+        <li class="layui-nav-item"><a href="">后台管理</a></li>
+    </ul>
+
+
+    <div id="ground">
+        <div id="sidebar">
+            <ul class="layui-nav layui-nav-tree layui-bg-cyan layui-inline" lay-filter="demo" style="height: 820px">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="usermanage.html">用户管理</a></dd>
+                        <dd><a href="housemanage.html">房源管理</a></dd>
+                        <dd><a href="ordermanage.html?oid=null">订单管理</a></dd>
+                        <dd><a href="commentmanage.html">评论管理</a></dd>
+                        <dd><a href="articlemanage.html">文章管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">其他</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="wantbeseller.html">卖家审核</a></dd>
+                        <dd><a href="">房源审核</a></dd>
+                        <dd><a href="">用户封禁</a></dd>
+                    </dl>
+                </li>
+                <!--<li class="layui-nav-item"><a href=""></a></li>-->
+                <li class="layui-nav-item"><a href="javascript:location.href='user/exit';" id="exit">退出</a></li>
+            </ul>
+        </div>
+        <div class="page_one" id="right" style="margin-top: 20px;padding: 20px;">
+            <div class="contant">
+                <div class="xinxi clearfix" >
+                    <div class="left">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div style="margin-top: 15px;margin-bottom: 20px">
+                                        <b>作者：</b>
+                                        <input id="author_input" style="border: 1px solid silver;border-radius: 6px;height: 30px;margin-right: 10px" class="input-medium search-query" type="text" />
+                                        <b>标题：</b>
+                                        <input id="title_input" style="border: 1px solid silver;border-radius: 6px;height: 30px;" class="input-medium search-query" type="text" />
+                                        <button id="search_button" onclick="searchResult()" class="btn" style="margin-left: 20px">查找</button>
+                                    </div>
+                                    <table class="table table-hover table-striped" style="border: 3px solid #07428b;">
+                                        <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th>作者</th>
+                                            <th>标题</th>
+                                            <th>内容</th>
+                                            <th>创建时间</th>
+                                            <th>赞</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="article">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page_num_inf">
+                            <i></i> 共
+                            <span id="totalPage">12</span>页<span id="totalCount">132</span>条
+                        </div>
+                        <div class="pageNum">
+                            <ul id="pageNum">
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="js/include.js"></script>
+<script src="layui/layui.js"></script>
+<script>
+    layui.config({
+        version: '1554901097999' //为了更新 js 缓存，可忽略
+    });
+
+    layui.use([ 'laypage', 'layer', 'table', 'element'], function(){
+        var layer = layui.layer //弹层
+            ,element = layui.element //元素操作
+
+        //向世界问个好
+        layer.msg('房源管理');
+
+        //监听Tab切换
+        element.on('tab(demo)', function(data){
+            layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
+                tips: 1
+            });
+        });
+
+    });
+
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+    });
+
+
+</script>
+</body>
+</html>

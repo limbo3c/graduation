@@ -10,6 +10,8 @@ public class Article implements Serializable {
     private String aimage;
     private String createDate;
     private int fabulous;
+    private String authorName;
+    private String updateDate;
 
 
 
@@ -25,7 +27,7 @@ public class Article implements Serializable {
 
     }
 
-    public Article(int aid, int author, String title, String story, String aimage, String createDate, int fabulous) {
+    public Article(int aid, int author, String title, String story, String aimage, String createDate, int fabulous, String authorName, String updateDate) {
         this.aid = aid;
         this.author = author;
         this.title = title;
@@ -33,6 +35,8 @@ public class Article implements Serializable {
         this.aimage = aimage;
         this.createDate = createDate;
         this.fabulous = fabulous;
+        this.authorName = authorName;
+        this.updateDate = updateDate;
     }
 
     public int getFabulous() {
@@ -81,5 +85,21 @@ public class Article implements Serializable {
 
     public void setAimage(String aimage) {
         this.aimage = aimage;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

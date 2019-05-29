@@ -4,9 +4,11 @@ import cn.itcast.travel.domain.*;
 import cn.itcast.travel.service.CategoryService;
 import cn.itcast.travel.service.FavoriteService;
 import cn.itcast.travel.service.HouseService;
+import cn.itcast.travel.service.SellerService;
 import cn.itcast.travel.service.impl.CategoryServiceImpl;
 import cn.itcast.travel.service.impl.FavoriteServiceImpl;
 import cn.itcast.travel.service.impl.HouseServiceImpl;
+import cn.itcast.travel.service.impl.SellerServiceImpl;
 import cn.itcast.travel.util.LayuiUtil;
 import cn.itcast.travel.util.CopyUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +36,7 @@ public class HouseServlet extends BaseServlet {
     private CategoryService categoryService = new CategoryServiceImpl();
     private HouseService houseService = new HouseServiceImpl();
     private FavoriteService favoriteService = new FavoriteServiceImpl();
+    private SellerService sellerService = new SellerServiceImpl();
 
     //分页查询
 
@@ -220,7 +223,9 @@ public class HouseServlet extends BaseServlet {
             //用户已经登录
             uid = user.getUid();
         }
-        house.setSid(uid);
+        System.out.println(uid);
+        Seller seller = sellerService.findSellerByUid(uid);
+        house.setSid(seller.getSid());
         boolean flag = houseService.load(house);
 
         ResultInfo info = new ResultInfo();

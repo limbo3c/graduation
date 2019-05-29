@@ -26,4 +26,9 @@ public interface ArticleDao {
 
     int findCountByAuthor(int author);
 
+    List<Article> findByAuthorNameAndTitle(String authorName,String title,int start,int pageSize);
+
+    int findCountByAuthorNameAndTitle(String authorName,String title);
+
+    void update(Article article);
 }

@@ -26,4 +26,8 @@ public interface ArticleService {
 
     PageBean<Article> myFavoriteArticle(List<ArticleFavorite> articleFavorites,int currentPage,int pageSize);
 
+    PageBean<Article> articleManageQuery(String authorName,String title,int currentPage,int pageSize);
+
+    boolean updateFabulous(int aid,int fabulous);
+
 }

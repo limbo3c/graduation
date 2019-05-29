@@ -79,4 +79,20 @@ public class SellerServiceImpl implements SellerService {
         }
         return false;
     }
+
+    @Override
+    public Seller findSellerByUid(int uid){
+        Seller seller = sellerDao.findByUid(uid);
+
+        return seller;
+    }
+
+    @Override
+    public boolean existSeller(int uid){
+        Seller seller = sellerDao.findByUid(uid);
+        if (seller==null){
+            return false;
+        }
+        return true;
+    }
 }

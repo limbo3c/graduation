@@ -26,19 +26,21 @@ public class ArticleServlet extends BaseServlet {
         String title = request.getParameter("title");
         User user = (User) request.getSession().getAttribute("user");
         int uid = 10;
+        String uname = "limbo32c";
         if(user == null){
             //用户尚未登录
             return ;
         }else{
             //用户已经登录
             uid = user.getUid();
-            System.out.println(user.getUsername());
+            uname = user.getUsername();
+
         }
-        System.out.println(story);
         Article article = new Article();
         article.setTitle(title);
         article.setStory(story);
         article.setAuthor(uid);
+        article.setAuthorName(uname);
         articleService.createArticle(article);
     }
 
@@ -215,5 +217,56 @@ public class ArticleServlet extends BaseServlet {
         //将pageBean对象序列化为json
         writeValue(pb,response);
     }
+
+    public void articleManageQuery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String authorName = request.getParameter("authorName");
+        String title = request.getParameter("title");
+        if(title!=null){
+            title = new String(title.getBytes("iso-8859-1"),"utf-8");
+        }
+        if(authorName!=null){
+            authorName = new String(authorName.getBytes("iso-8859-1"),"utf-8");
+        }
+        String currentPageStr = request.getParameter("currentPage");
+        String pageSizeStr = request.getParameter("pageSize");
+
+        int currentPage = 0;//当前页码，如果不传递，则默认为第一页
+        if(currentPageStr != null && currentPageStr.length() > 0){
+            currentPage = Integer.parseInt(currentPageStr);
+        }else{
+            currentPage = 1;
+        }
+
+        int pageSize = 0;
+        if(pageSizeStr != null && pageSizeStr.length() > 0){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }else{
+            pageSize = 10;
+        }
+
+        PageBean<Article> pb = articleService.articleManageQuery(authorName,title,currentPage,pageSize);
+
+        //将pageBean对象序列化为json
+        writeValue(pb,response);
+
+    }
+    public void updateFabulous(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String fabulousStr = request.getParameter("fabulous");
+        String aidStr = request.getParameter("aid");
+        int aid = Integer.parseInt(aidStr);
+        int fabulous = Integer.parseInt(fabulousStr);
+
+        boolean flag = articleService.updateFabulous(aid,fabulous);
+        ResultInfo resultInfo =  new ResultInfo();
+        if (flag){
+            resultInfo.setFlag(true);
+        }else {
+            resultInfo.setErrorMsg("修改失败");
+            resultInfo.setFlag(false);
+        }
+        writeValue(resultInfo,response);
+
+    }
+
 
 }

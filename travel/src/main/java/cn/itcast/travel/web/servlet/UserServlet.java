@@ -2,8 +2,11 @@ package cn.itcast.travel.web.servlet;
 
 import cn.itcast.travel.domain.PageBean;
 import cn.itcast.travel.domain.ResultInfo;
+import cn.itcast.travel.domain.Seller;
 import cn.itcast.travel.domain.User;
+import cn.itcast.travel.service.SellerService;
 import cn.itcast.travel.service.UserService;
+import cn.itcast.travel.service.impl.SellerServiceImpl;
 import cn.itcast.travel.service.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.beanutils.BeanUtils;
@@ -22,6 +25,8 @@ public class UserServlet extends BaseServlet {
 
     //声明UserService业务对象
     private UserService service = new UserServiceImpl();
+
+    private SellerService sellerService = new SellerServiceImpl();
 
     //注册功能
 
@@ -267,5 +272,22 @@ public class UserServlet extends BaseServlet {
         }
 
         writeValue(info,response);
+    }
+
+
+    public void sellerFlag(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uidStr = request.getParameter("uid");
+        int uid = Integer.parseInt(uidStr);
+        boolean flag=true;
+        if (sellerService.existSeller(uid)){
+            Seller seller = sellerService.findSellerByUid(uid);
+            if (seller.getIsSeller().equals("Y")){
+                flag=false;
+            }
+        }
+
+        System.out.println(flag);
+        writeValue(flag,response);
+
     }
 }

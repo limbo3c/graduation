@@ -17,7 +17,7 @@ public interface CommentDao {
 
     List<Comment> findCommentByPage(int hid , int start , int pageSize, String uname);
 
-    int findHouseCount(int hid,String uname);
+    int findCommentCount(int hid,String uname);
 
     Comment findOneComment(int cmid);
 }

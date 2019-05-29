@@ -20,6 +20,7 @@ public class ArticleServiceImpl implements ArticleService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         article.setFabulous(0);
         article.setCreateDate(df.format(new Date()));
+        article.setUpdateDate(df.format(new Date()));
         articleDao.save(article);
         return true;
     }
@@ -128,5 +129,41 @@ public class ArticleServiceImpl implements ArticleService {
         int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize :(totalCount / pageSize) + 1 ;
         pb.setTotalPage(totalPage);
         return pb;
+    }
+
+    @Override
+    public PageBean<Article> articleManageQuery(String authorName,String title,int currentPage,int pageSize){
+        PageBean<Article> pb = new PageBean<Article>();
+        //当前页码
+        pb.setCurrentPage(currentPage);
+        //每页显示条数
+        pb.setPageSize(pageSize);
+
+        //总记录数
+        int totalCount = articleDao.findCountByAuthorNameAndTitle(authorName,title);
+        pb.setTotalCount(totalCount);
+        //当前页显示的数据集
+        int start = (currentPage - 1) * pageSize;
+        List<Article> list = articleDao.findByAuthorNameAndTitle(authorName,title,start,pageSize);
+        pb.setList(list);
+
+        //设置总页数 = 总记录数/每页显示条数
+        int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize :(totalCount / pageSize) + 1 ;
+        pb.setTotalPage(totalPage);
+
+
+        return pb;
+    }
+
+    @Override
+    public boolean updateFabulous(int aid,int fabulous){
+        Article article = findOneArticle(aid);
+        if (article!=null){
+            article.setFabulous(fabulous);
+            articleDao.update(article);
+            return true;
+        }
+        return false;
+
     }
 }

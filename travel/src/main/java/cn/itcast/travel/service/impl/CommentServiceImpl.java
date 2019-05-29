@@ -99,7 +99,7 @@ public class CommentServiceImpl implements CommentService {
         pb.setPageSize(pageSize);
 
         //总记录数
-        int totalCount = commentDao.findHouseCount(hid,uname);
+        int totalCount = commentDao.findCommentCount(hid,uname);
         pb.setTotalCount(totalCount);
         //当前页显示的数据集
         int start = (currentPage - 1) * pageSize;

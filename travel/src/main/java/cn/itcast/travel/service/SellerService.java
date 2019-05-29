@@ -15,4 +15,7 @@ public interface SellerService {
 
     boolean deleteSeller(int sid);
 
+    Seller findSellerByUid(int uid);
+
+    boolean existSeller(int uid);
 }

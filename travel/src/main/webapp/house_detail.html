@@ -47,7 +47,7 @@
                     <p class="price"><strong id="price"></strong><span>起</span></p>
                     <!--<p class="price"><strong id="price">160</strong><span>起</span></p>-->
                     <p class="collect">
-                        <a class="btn" id="order_btn"onclick="createOrder();" style="background-color: yellowgreen ;margin-right: 20px">立即预订</a>
+                        <a class="btn" id="order_btn"onclick="createOrder();" style="background-color: yellowgreen ;margin-right: 20px" disabled="">立即预订</a>
                         <a class="btn" id="favorite" onclick="addFavorite();"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
 
                         <!--<a  class="btn already" disabled="disabled"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>-->
@@ -192,6 +192,14 @@
             $("#sname").html(house.seller.sname);
             $("#consphone").html(house.seller.consphone);
             $("#address").html(house.seller.address);
+            if(house.houseNumber==0){
+                $("#order_btn").html("不可预订");
+                var orderBtn = document.getElementById("order_btn");
+                $("#order_btn").addClass("disable",true);
+                $(orderBtn).removeAttr("href");
+                $(orderBtn).removeAttr("onclick");
+            }
+
             //设置收藏次数
             $("#favoriteCount").html("已收藏"+house.count+"次");
             var crumbstr = '';
@@ -228,6 +236,7 @@
             $("#dd").html(ddstr);
 
             //图片展示和切换代码调用
+
             goImg();
         });
     });
