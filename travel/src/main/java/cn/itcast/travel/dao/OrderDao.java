@@ -28,4 +28,6 @@ public interface OrderDao{
 
     int findOrderCount(int oid);
 
+    Order findOne(int oid);
+
 }

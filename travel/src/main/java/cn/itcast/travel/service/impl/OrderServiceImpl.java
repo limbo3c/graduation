@@ -18,6 +18,12 @@ public class OrderServiceImpl implements OrderService {
 
     private HouseDao houseDao = new HouseDaoImpl();
 
+
+    @Override
+    public Order findOneOrder(int oid){
+        return orderDao.findOne(oid);
+    }
+
     //完结订单
     @Override
     public boolean finish(Order order){

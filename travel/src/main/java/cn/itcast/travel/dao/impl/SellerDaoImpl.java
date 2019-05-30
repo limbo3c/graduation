@@ -16,7 +16,7 @@ public class SellerDaoImpl implements SellerDao {
 
     @Override
     public void save(Seller seller){
-        String sql = "insert into tab_seller(uid,sname,consphone,address,identity,isSeller,createDate,updateDate) values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into tab_seller(uid,sname,consphone,address,identity,isSeller,createDate,updateDate,zfCode,wxCode) values(?,?,?,?,?,?,?,?,?,?)";
 
 
         template.update(sql,seller.getUid(),
@@ -26,7 +26,9 @@ public class SellerDaoImpl implements SellerDao {
                 seller.getIdentity(),
                 seller.getIsSeller(),
                 seller.getCreateDate(),
-                seller.getUpdateDate()
+                seller.getUpdateDate(),
+                seller.getZfCode(),
+                seller.getWxCode()
         );
     }
 
@@ -85,4 +87,9 @@ public class SellerDaoImpl implements SellerDao {
         template.update(sql,sid);
     }
 
+    @Override
+    public Seller findOne(int sid){
+        String sql = "select * from tab_seller where sid = ?";
+        return template.queryForObject(sql,new BeanPropertyRowMapper<Seller>(Seller.class),sid);
+    }
 }

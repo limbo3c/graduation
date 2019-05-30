@@ -18,4 +18,6 @@ public interface SellerService {
     Seller findSellerByUid(int uid);
 
     boolean existSeller(int uid);
+
+    Seller findOneSeller(int sid);
 }

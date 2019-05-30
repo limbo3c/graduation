@@ -20,6 +20,8 @@ public class SellerServiceImpl implements SellerService {
             seller.setIsSeller("N");
             seller.setCreateDate(df.format(new Date()));
             seller.setUpdateDate(df.format(new Date()));
+            seller.setZfCode("img/product/code/CMp5801TmHEA4HevS6NaAfFta61NaKp.png");
+            seller.setWxCode("img/product/code/7aeEz15LFEIAyOZlP19FxHkA0buXMOk.png");
             sellerDao.save(seller);
             return true;
         }
@@ -95,4 +97,10 @@ public class SellerServiceImpl implements SellerService {
         }
         return true;
     }
+
+    @Override
+    public  Seller findOneSeller(int sid){
+        return sellerDao.findOne(sid);
+    }
+
 }

@@ -2,8 +2,10 @@ package cn.itcast.travel.web.servlet;
 import cn.itcast.travel.domain.*;
 import cn.itcast.travel.service.HouseService;
 import cn.itcast.travel.service.OrderService;
+import cn.itcast.travel.service.SellerService;
 import cn.itcast.travel.service.impl.HouseServiceImpl;
 import cn.itcast.travel.service.impl.OrderServiceImpl;
+import cn.itcast.travel.service.impl.SellerServiceImpl;
 import cn.itcast.travel.util.DateComparisonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/order/*")
@@ -22,6 +27,8 @@ public class OrderServlet extends BaseServlet{
     private OrderService orderService = new OrderServiceImpl();
 
     private HouseService houseService = new HouseServiceImpl();
+
+    private SellerService sellerService = new SellerServiceImpl();
 
     public void createOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String startAndEndDate = request.getParameter("startAndEndDate");
@@ -145,6 +152,64 @@ public class OrderServlet extends BaseServlet{
 
         PageBean<Order> pb = orderService.allOrderPageQuery(oid,currentPage,pageSize);
         writeValue(pb,response);
+    }
+
+
+    public void cancelOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String oidStr = request.getParameter("oid");
+        int oid =Integer.parseInt(oidStr);
+        Order order = orderService.findOneOrder(oid);
+        boolean flag = orderService.cancel(order);
+        ResultInfo info = new ResultInfo();
+
+        if (flag){
+            info.setFlag(true);
+        }else {
+            info.setFlag(false);
+            info.setErrorMsg("退订失败");
+        }
+
+        writeValue(info,response);
+
+    }
+
+    public void payOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String oidStr = request.getParameter("oid");
+        int oid =Integer.parseInt(oidStr);
+        Order order = orderService.findOneOrder(oid);
+        boolean flag = orderService.endPay(order);
+        ResultInfo info = new ResultInfo();
+
+        if (flag){
+            info.setFlag(true);
+        }else {
+            info.setFlag(false);
+            info.setErrorMsg("退订失败");
+        }
+
+        writeValue(info,response);
+    }
+
+
+    public void findOneOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String oidStr = request.getParameter("oid");
+        int oid = Integer.parseInt(oidStr);
+        Order order = orderService.findOneOrder(oid);
+        writeValue(order,response);
+    }
+
+    public void payMethod(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String oidStr = request.getParameter("oid");
+        int oid = Integer.parseInt(oidStr);
+        Order order = orderService.findOneOrder(oid);
+        int sid = order.getSid();
+        Seller seller = sellerService.findOneSeller(sid);
+        List data = new ArrayList();
+        data.add(oid);
+        data.add(seller.getZfCode());
+        data.add(seller.getWxCode());
+        writeValue(data,response);
+
     }
 
 }

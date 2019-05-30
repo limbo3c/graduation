@@ -46,7 +46,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void finishPay(Order order){
-        String sql = " update tab_order set pay = 2 where oid=?";
+        String sql = " update tab_order set pay = 1 where oid=?";
         template.update(sql,order.getOid());
     }
 
@@ -176,6 +176,12 @@ public class OrderDaoImpl implements OrderDao {
         sql = sb.toString();
 
         return template.queryForObject(sql,Integer.class,params.toArray());
+    }
+
+    @Override
+    public Order findOne(int oid){
+        String sql = "select * from tab_order where oid = ?";
+        return template.queryForObject(sql,new BeanPropertyRowMapper<Order>(Order.class),oid);
     }
 
 }

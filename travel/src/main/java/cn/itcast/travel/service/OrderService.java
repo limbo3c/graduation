@@ -5,6 +5,8 @@ import cn.itcast.travel.domain.PageBean;
 
 public interface OrderService {
 
+    Order findOneOrder(int oid);
+
     boolean finish(Order order);
 
     boolean cancel(Order order);

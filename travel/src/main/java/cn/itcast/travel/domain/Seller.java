@@ -15,11 +15,13 @@ public class Seller implements Serializable {
     private String isSeller;
     private String createDate;
     private String updateDate;
+    private String zfCode;
+    private String wxCode;
 
     public Seller(){}
 
 
-    public Seller(int sid, int uid, String sname, String consphone, String address, String identity, String isSeller, String createDate, String updateDate) {
+    public Seller(int sid, int uid, String sname, String consphone, String address, String identity, String isSeller, String createDate, String updateDate, String zfCode, String wxCode) {
         this.sid = sid;
         this.uid = uid;
         this.sname = sname;
@@ -29,6 +31,8 @@ public class Seller implements Serializable {
         this.isSeller = isSeller;
         this.createDate = createDate;
         this.updateDate = updateDate;
+        this.zfCode = zfCode;
+        this.wxCode = wxCode;
     }
 
     public String getIsSeller() {
@@ -102,6 +106,22 @@ public class Seller implements Serializable {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getZfCode() {
+        return zfCode;
+    }
+
+    public void setZfCode(String zfCode) {
+        this.zfCode = zfCode;
+    }
+
+    public String getWxCode() {
+        return wxCode;
+    }
+
+    public void setWxCode(String wxCode) {
+        this.wxCode = wxCode;
     }
 
     @Override

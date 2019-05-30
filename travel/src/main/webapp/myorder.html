@@ -8,8 +8,9 @@
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/myorder.css">
-    <script src="js/bootstrap.min.js"></script>
+
     <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/getParameter.js"></script>
     <script>
 
@@ -117,15 +118,20 @@
                         '                                    <td>'+order.sid+'</td>\n' +
                         '                                    <td>'+order.startAndEndDate+'</td>\n' +
                         '                                    <td>'+order.createDate+'</td>\n' +
-                        '                                    <td>'+order.telephone+'</td>\n';
+                        '                                    <td>'+order.telephone+'</td>\n'+
+                        '                                    <td>'+order.price+'</td>\n';
+
                     if (order.pay=='0') li+='<td>未支付</td>\n';
                     if (order.pay=='1') li+='<td>已支付</td>\n';
                     if (order.stage=='1') li+='<td>进行中</td>\n';
                     if (order.stage=='2') li+='<td>已完结</td>\n';
                     if (order.stage=='3') li+='<td>已退订</td>\n';
 
-                    li+='                                    <td>'+order.price+'</td>\n' +
-                        '                                </tr>';
+                    if (order.pay=='0'&&order.stage=='1') li+='<td><button id="'+order.oid+'" class="btn" onclick="paymethod(this)" data-toggle="modal" data-target="#myModal" style="background-color: #b4bfcd ;margin-right: 20px">支付</buttonid></td>\n';
+                    else li+='<td></td>';
+                    if(order.stage=='1')li+='<td><a class="btn" onclick="javascript:unsubscribe('+order.oid+')" style="background-color: #b4bfcd ;margin-right: 20px">退订</a></td>\n';
+                    else li+='<td></td>';
+                    li+= '</tr>';
                     order_lis += li;
                 }
                 $("#order").html(order_lis);
@@ -136,17 +142,108 @@
 
         }
 
+        function unsubscribe(oid) {
+            $.get("order/cancelOrder",{oid:oid},function (data) {
+                if(data.flag){
+                    location.reload();
+                }else{
+                    $("#errorMsg").html(data.errorMsg);
+                }
+            });
+        }
+
+        $(function () {
+            $("#registerForm").submit(function(){
+                $.post("order/payOrder",$(this).serialize(),function(data){
+
+                    if(data.flag){
+                        location.reload();
+                    }else{
+                        $("#errorMsg").html(data.errorMsg);
+
+                    }
+                });
+
+                return false;
+            });
+        });
+
+
+
+        function paymethod(ths) {
+            var oid = ths.id;
+            $.get("order/payMethod",{oid:oid},function (data) {
+
+                var oid = data[0];
+                document.getElementById("oid").value=oid;
+                var wxcode = '<img src="'+data[2]+'" style="width: 200px;height: 200px;margin-left: 50px">';
+                var zfcode = '<img src="'+data[1]+'" style="width: 200px;height: 200px;">';
+                $("#wxCode").html(wxcode);
+                $("#zfCode").html(zfcode);
+
+            });
+        }
+
 
     </script>
 </head>
 <body>
 
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title" id="myModalLabel">支付页</h4>
+            </div>
+            <div class="modal-body">
+                <div class="rg_form clearfix" >
+                    <div class="rg_form_center" >
+                        <form id="registerForm" >
+                            <table style="margin-left: 65px" >
+                                <tr>
+                                    <td class="td_left">
+                                        <label for="oid"></label>
+                                    </td>
+                                    <td class="td_right">
+                                        <input type="hidden" id="oid" name="oid" value="" >
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="td_left">
+                                    </td>
+                                    <td class="td_right gender" id="zfCode">
+
+                                    </td>
+                                    <td class="td_right gender" id="wxCode">
+
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <input  type="submit" class="btn btn-primary" value="完成">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+</div>
 <div id="header"></div>
 <div class="page_one">
     <div class="contant">
         <div class="crumbs">
-            <img src="images/search.png" alt="">
-            <p><span>我的订单</span></p>
+            <span>我的订单</span>
         </div>
         <div class="xinxi clearfix">
             <div class="left">
@@ -180,6 +277,7 @@
                                     <th>支付状态</th>
                                     <th>订单状态</th>
                                     <th>订单金额</th>
+                                    <th></th>
                                     <th></th>
                                 </tr>
                                 </thead>

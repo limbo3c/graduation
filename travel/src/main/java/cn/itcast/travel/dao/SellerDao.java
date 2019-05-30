@@ -24,4 +24,6 @@ public interface SellerDao {
 
     void delete(int sid);
 
+    Seller findOne(int sid);
+
 }
